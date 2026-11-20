@@ -1,0 +1,178 @@
+/* Buttons: .btn (normal, .btn-small), .icon-btn (top bar, icon only), .icon-mini (28 px), .link-btn, .seg (segmented
+   group) and .chip. The icon inside a button is sized only here: 24 px in .btn, 16 px in .btn-small and .icon-mini
+   (docs rule R3/R4). Night colours are at the end of the file. */
+
+/* ---------- .btn: raised 16-bit button, colour split at 50 % ---------- */
+
+.btn {
+  font-family: var(--pixel); font-size: 17px; font-weight: 700; font-synthesis: none; line-height: 1.3;
+  letter-spacing: .5px; text-transform: uppercase;
+  padding: 10px 14px; color: var(--ink); cursor: pointer;
+  background: linear-gradient(#fdf0d6 0 50%, #f5e1bd 50%);
+  border: 2px solid var(--frame-dark); border-radius: 6px;
+  box-shadow: inset 0 2px 0 var(--hi), inset 0 -3px 0 rgba(91, 67, 50, .18), 0 3px 0 var(--frame-dark), 0 5px 0 rgba(91, 67, 50, .18);
+}
+
+.btn:hover { filter: brightness(1.05) saturate(1.1); }
+
+.btn:active { transform: translateY(3px); box-shadow: inset 0 2px 0 var(--hi), inset 0 -2px 0 rgba(91, 67, 50, .18), 0 0 0 var(--frame-dark); }
+
+.btn:disabled { opacity: .45; cursor: default; filter: none; transform: none; }
+
+.btn:focus-visible,
+.icon-btn:focus-visible { outline: 3px solid var(--title); outline-offset: 2px; }
+
+.btn-small { padding: 7px 10px; font-size: 13px; }
+
+.btn-primary { background: linear-gradient(#fbd6b2 0 50%, #f4bf8f 50%); }
+
+.btn-success { background: linear-gradient(#cdeac6 0 50%, #abd9a2 50%); }
+
+.btn-danger { background: linear-gradient(#fac7c4 0 50%, #f2a6a2 50%); }
+
+.btn.on { background: linear-gradient(#fae6ae 0 50%, #f3d286 50%); }
+
+/* Icon + text (.btn-ico) and icon only (.solo) */
+
+.btn.btn-ico { display: inline-flex; align-items: center; gap: 6px; }
+
+.btn.btn-ico.solo { padding-left: 10px; padding-right: 10px; }
+
+/* "+" buttons */
+
+.btn-add { min-width: 40px; padding-left: 10px; padding-right: 10px; font-size: 22px; line-height: 1; }
+
+.btn-small.btn-add { min-width: 30px; font-size: 18px; }
+
+.btn.full.btn-add { font-size: 24px; }
+
+/* The ▶ of start buttons reads better bigger with the Aventura typeface */
+
+.btn[data-rstart],
+.btn[data-mtgo] { font-size: 28px; line-height: 1; }
+
+/* Light that crosses the main buttons on hover */
+
+.anim-on .btn-primary, .anim-on .btn-success { position: relative; overflow: hidden; }
+
+.anim-on .btn-primary::after, .anim-on .btn-success::after {
+  content: ''; position: absolute; top: 0; bottom: 0; width: 30%; left: -40%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .55), transparent);
+  pointer-events: none;
+}
+
+.anim-on .btn-primary:hover::after, .anim-on .btn-success:hover::after { animation: shine .6s ease-out; }
+
+.anim-on .btn:active,
+.anim-on .icon-btn:active { transform: translate(2px, 2px) scale(.96); }
+
+/* ---------- .icon-mini: small square button inside cards and rows ---------- */
+
+.icon-mini {
+  width: 28px; height: 28px; padding: 0; flex: none;
+  display: inline-grid; place-items: center;
+  font-family: var(--emoji); font-size: 17px; line-height: 1; cursor: pointer;
+  background: var(--paper2);
+  border: 2px solid var(--frame-dark); border-radius: 5px;
+  box-shadow: inset 0 1px 0 var(--hi), inset 0 -2px 0 rgba(91, 67, 50, .18);
+}
+
+.icon-mini:hover,
+.icon-mini.on { background: var(--butter); }
+
+/* ---------- .icon-btn: top bar buttons (42 px) ---------- */
+
+.icon-btn {
+  width: 42px; height: 42px; padding: 0;
+  display: grid; place-items: center;
+  font-family: var(--emoji); font-size: 18px; cursor: pointer;
+  background: var(--butter);
+  border: 2px solid var(--frame-dark); border-radius: 7px;
+  box-shadow: inset 0 2px 0 var(--hi), inset 0 -3px 0 rgba(91, 67, 50, .2), 0 3px 0 var(--frame-dark), 0 5px 0 rgba(91, 67, 50, .16);
+}
+
+.icon-btn:nth-child(2) { background: var(--sky); }
+
+.icon-btn:nth-child(3) { background: var(--lilac); }
+
+.icon-btn:hover { filter: brightness(1.05); }
+
+.icon-btn:active { transform: translate(3px, 3px); box-shadow: none; }
+
+/* ---------- Icons inside buttons (one place for every size) ---------- */
+
+.btn .ico-img { width: 24px; height: 24px; vertical-align: -6px; margin: -2px 0; }
+
+.btn-small .ico-img { width: 16px; height: 16px; vertical-align: -4px; margin: 0; }
+
+.icon-mini .ico-img { width: 16px; height: 16px; vertical-align: -3px; }
+
+.btn.btn-ico .ico-img { vertical-align: 0; margin: 0; }
+
+.icon-btn .ico-img { width: 32px; height: 32px; vertical-align: top; }
+
+.icon-btn.muted .ico-img { filter: grayscale(1) opacity(.45); }
+
+/* ---------- .link-btn: text link that acts as a button ---------- */
+
+.link-btn {
+  display: block; margin: 10px auto 0; padding: 0; border: 0; background: none; cursor: pointer;
+  font-family: var(--body); font-size: 17px; color: var(--muted); text-decoration: underline;
+}
+
+.link-btn:hover { color: var(--title); }
+
+/* ---------- .seg: segmented group (one option on) ---------- */
+
+.seg { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.seg .btn { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-2); }
+
+.seg .btn.on { background: linear-gradient(#fae6ae 0 50%, #f3d286 50%); }
+
+.seg[data-seg="qkind"] .btn.on, :root[data-theme="night"] .seg[data-seg="qkind"] .btn.on { background: var(--rc); color: var(--on-color, var(--ink)); }
+
+/* ---------- .chip: small tag (a colour in --c), .chip-add, .chip.tag (toggle) ---------- */
+
+.chips { display: flex; flex-wrap: wrap; gap: 7px; }
+
+#stats .chips { margin-bottom: 14px; }
+
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 9px; font-size: 19px;
+  background: var(--c, var(--paper2));
+  border: 2px solid var(--frame-dark); border-radius: 5px;
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, .5);
+}
+
+/* Text on a colour is always dark. It weighs one class (it has to beat "button { color: inherit }"), so a chip
+   that is not filled with its colour (a Workflow thread, later in the cascade) keeps its own text colour */
+:where(.chip)[style*="--c"] { color: var(--on-color); }
+
+.chip-x { border: 0; background: none; padding: 0 2px; cursor: pointer; font-size: 18px; color: var(--on-color); opacity: .75; }
+
+.chip-x:hover { color: #b0413e; }
+
+.chip-add { cursor: pointer; background: var(--paper); border-style: dashed; min-width: 34px; font-size: 18px; }
+
+.chip.tag { cursor: pointer; opacity: .55; }
+
+.chip.tag.on { opacity: 1; border-color: var(--title); background: color-mix(in srgb, var(--title) 15%, var(--card)); }
+
+/* ---------- Night ---------- */
+
+:root[data-theme="night"] .btn {
+  color: var(--ink);
+  background: linear-gradient(#2e3474 0 50%, #272c66 50%);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, .15), inset 0 -3px 0 rgba(0, 0, 0, .3), 0 3px 0 var(--frame-dark), 0 5px 0 rgba(0, 0, 0, .3);
+}
+
+:root[data-theme="night"] .btn-primary { background: linear-gradient(#ffc79a 0 50%, #ffb07a 50%); color: var(--on-color); }
+
+:root[data-theme="night"] .btn-success { background: linear-gradient(#a6ecb2 0 50%, #86df98 50%); color: var(--on-color); }
+
+:root[data-theme="night"] .btn-danger { background: linear-gradient(#ffa6b0 0 50%, #ff8f9f 50%); color: var(--on-color); }
+
+:root[data-theme="night"] .btn.on,
+:root[data-theme="night"] .seg .btn.on { background: linear-gradient(#ffe08a 0 50%, #ffd36b 50%); color: var(--on-color); }

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title data-i18n="mini.windowTitle"></title>
+  <style>
+    @font-face { font-family: 'Aventura'; src: url('fonts/Aventura-Regular.ttf') format('truetype'); size-adjust: 92%; }
+    @font-face { font-family: 'Aventura Px'; src: url('fonts/Aventura-Bold.ttf') format('truetype'); size-adjust: 100%; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; overflow: hidden; user-select: none; }
+    body {
+      display: flex; flex-direction: column; padding: 8px 10px 10px; cursor: default;
+      font-family: 'Aventura', monospace; color: #f1edff;
+      background: linear-gradient(#2b2f6b, #1c2054); border: 3px solid #0f1236; border-radius: 14px;
+      box-shadow: inset 0 0 0 2px #3a4190;
+    }
+    /* Header: what you are doing and the window buttons */
+    .top { display: flex; align-items: center; gap: 6px; height: 22px; cursor: grab; }
+    .pywebview-drag-region { cursor: grab; }
+    .top small { flex: 1; min-width: 0; font-size: 12px; letter-spacing: 1px; color: #b9b4e6; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .dot { width: 8px; height: 8px; border-radius: 2px; background: #86c066; flex: none; }
+    .paused .dot { background: #f6d874; }
+    .idle .dot { background: #8a87a0; }
+    .win { width: 22px; height: 20px; font-size: 12px; padding: 0; opacity: .7; }
+    .win:hover { opacity: 1; }
+    .win img, .brk-chip img { width: 16px; height: 16px; vertical-align: middle; }
+    /* Body */
+    .main { flex: 1; display: flex; align-items: center; gap: 12px; min-height: 0; }
+    img { width: 64px; height: 64px; image-rendering: pixelated; flex: none; }
+    .col { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+    .time { font: 40px/0.9 'Aventura Px', monospace; color: #ffd36b; letter-spacing: 1px; }
+    .paused .time { color: #b9b4e6; }
+    .bar { height: 6px; background: #0f1236; border-radius: 3px; overflow: hidden; }
+    .bar i { display: block; height: 100%; background: #86c066; transition: width .5s steps(6); }
+    .row { display: flex; align-items: center; gap: 6px; }
+    button {
+      height: 28px; padding: 0 10px; cursor: pointer; font: 15px/1 'Aventura', monospace; color: #f1edff;
+      background: #3a4190; border: 2px solid #0f1236; border-radius: 8px; box-shadow: 0 2px 0 #0f1236;
+    }
+    button:hover { background: #4c56b8; }
+    button:active { transform: translateY(2px); box-shadow: none; }
+    button.go { background: #c98a2c; }
+    button.go:hover { background: #ddb03c; }
+    button.warn { background: #c64d55; }
+    .grow { flex: 1; }
+    /* Choosing minutes */
+    .step { display: flex; align-items: center; gap: 4px; }
+    .step button { width: 28px; padding: 0; font-size: 18px; }
+    .step input {
+      width: 58px; height: 34px; text-align: center; font: 26px/1 'Aventura Px', monospace; color: #ffd36b;
+      background: #0f1236; border: 2px solid #3a4190; border-radius: 8px; outline: none; cursor: text;
+    }
+    .step input::-webkit-inner-spin-button { display: none; }
+    .step small { color: #b9b4e6; }
+    .presets { display: flex; gap: 4px; }
+    .presets button { height: 22px; padding: 0 7px; font: 14px/1 'Aventura Px', monospace; background: #2b2f6b; box-shadow: none; }
+    .presets button.on { background: #f6d874; color: #2f2230; }
+    .brk-time { color: #7bcbbb; }
+    .brk-chip { height: 20px; padding: 0 8px; font-size: 13px; background: #3b8f8b; box-shadow: none; }
+    .brk-chip:hover { background: #4fa8a3; }
+    .resting .dot { background: #7bcbbb; }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body class="idle">
+  <div class="top pywebview-drag-region">
+    <span class="dot"></span><small id="title" data-i18n="mini.focus"></small>
+    <button class="brk-chip" id="offer" data-cmd="break:5" data-i18n-title="mini.takeBreak" hidden><img src="assets/icons/cat-drink.png" alt=""> 5</button>
+    <button class="win" data-cmd="show" data-i18n-title="mini.openApp" data-i18n-aria-label="mini.openApp"><img src="assets/icons/ui-float.png" alt=""></button>
+    <button class="win" data-cmd="close" data-i18n-title="mini.close" data-i18n-aria-label="mini.close">✕</button>
+  </div>
+  <div class="main">
+    <img id="plant" class="pywebview-drag-region" src="assets/icons/plant-1.png" alt="" data-i18n-title="mini.dragToMove">
+    <!-- Running -->
+    <div class="col" id="run" hidden>
+      <span class="time pywebview-drag-region" id="time">--:--</span>
+      <div class="bar"><i id="fill" style="width:0"></i></div>
+      <div class="row">
+        <button class="grow" id="pause" data-cmd="pause" data-i18n-title="mini.pauseResume" data-i18n="mini.pause"></button>
+        <button class="grow" id="stop" data-cmd="stop" data-i18n-title="mini.stopTip" data-i18n="mini.stop"></button>
+      </div>
+    </div>
+    <!-- Break -->
+    <div class="col" id="brk" hidden>
+      <span class="time brk-time pywebview-drag-region" id="btime">--:--</span>
+      <div class="row"><button class="grow" data-cmd="breakstop" data-i18n-title="mini.endBreakTip" data-i18n="mini.endBreak"></button></div>
+    </div>
+    <!-- No focus: choose the minutes -->
+    <div class="col" id="idle">
+      <div class="row">
+        <div class="step">
+          <button data-step="-5" data-i18n-title="mini.less" data-i18n-aria-label="mini.less">−</button>
+          <input id="mins" type="number" min="1" max="240" value="25" data-i18n-aria-label="focus.minutes">
+          <button data-step="5" data-i18n-title="mini.more" data-i18n-aria-label="mini.more">+</button>
+          <small data-i18n="focus.minUnit"></small>
+        </div>
+      </div>
+      <div class="row">
+        <div class="presets" id="presets"><button data-set="15">15</button><button data-set="25">25</button><button data-set="50">50</button><button data-set="90">90</button></div>
+        <button class="go grow" id="start" data-i18n-title="mini.start" data-i18n-aria-label="mini.start">▶</button>
+      </div>
+    </div>
+  </div>
+  <script src="js/i18n/i18n.js"></script>
+  <script src="js/i18n/es.js"></script>
+  <script src="js/i18n/en.js"></script>
+  <script>
+    'use strict';
+    const $ = id => document.getElementById(id);
+    const api = () => window.pywebview && window.pywebview.api;
+    let armed = 0, editing = false, lastDef = 0;
+    const clamp = v => Math.max(1, Math.min(240, Math.round(+v) || 25));
+    function markPreset() {
+      const v = clamp($('mins').value);
+      document.querySelectorAll('[data-set]').forEach(b => b.classList.toggle('on', +b.dataset.set === v));
+    }
+    function draw(s) {
+      if (s && s.lang && s.lang !== currentLanguage()) { setLanguage(s.lang); translateStatic(); }
+      const run = !!(s && s.running), brk = !run && s && s.brk;
+      document.body.classList.toggle('resting', !!brk);
+      $('brk').hidden = !brk;
+      if (brk) { $('btime').textContent = s.brk.left; }
+      $('offer').hidden = run || brk || !(s && s.offer);
+      if (s && s.offer) { $('offer').dataset.cmd = `break:${s.offer}`; $('offer').innerHTML = `<img src="assets/icons/cat-drink.png" alt=""> ${s.offer}`; $('offer').title = t('mini.breakOf', { min: s.offer }); }
+      document.body.classList.toggle('idle', !run);
+      document.body.classList.toggle('paused', run && !!s.paused);
+      $('run').hidden = !run;
+      $('idle').hidden = run || !!brk;
+      $('title').textContent = run ? `${s.paused ? t('mini.paused') : t('mini.focus')}${s.name && !s.isFree ? ` · ${s.name}` : ''}` : t('mini.focus');
+      $('plant').src = brk ? 'assets/icons/cat-drink.png' : `assets/icons/plant-${run ? s.stage : 1}.png`;
+      if (brk) $('title').textContent = t('mini.rest');
+      if (run) {
+        $('time').textContent = s.left;
+        $('fill').style.width = `${s.pct}%`;
+        $('pause').textContent = s.paused ? t('mini.resume') : t('mini.pause');
+      } else if (!editing && s && s.defMin && s.defMin !== lastDef) {
+        lastDef = s.defMin;
+        $('mins').value = s.defMin;
+        markPreset();
+      }
+    }
+    async function poll() {
+      try { if (api()) draw(await api().mini_state()); } catch (e) { /* the app is closing */ }
+      setTimeout(poll, 500);
+    }
+    const setMins = v => { $('mins').value = clamp(v); markPreset(); };
+    document.addEventListener('click', e => {
+      const st = e.target.closest('[data-step]');
+      if (st) { setMins(clamp($('mins').value) + +st.dataset.step); return; }
+      const ps = e.target.closest('[data-set]');
+      if (ps) { setMins(ps.dataset.set); return; }
+      if (e.target.closest('#start')) { const m = clamp($('mins').value); lastDef = m; if (api()) api().mini_cmd(`start:${m}`); return; }
+      const b = e.target.closest('[data-cmd]');
+      if (!b || !api()) return;
+      const cmd = b.dataset.cmd;
+      if (cmd === 'stop') {
+        if (Date.now() - armed > 3000) {
+          armed = Date.now(); b.classList.add('warn'); b.textContent = t('mini.sure');
+          setTimeout(() => { b.classList.remove('warn'); b.textContent = t('mini.stop'); }, 3000);
+          return;
+        }
+      }
+      if (cmd === 'close') { api().mini_close(); return; }
+      api().mini_cmd(cmd);
+    });
+    $('mins').addEventListener('focus', () => { editing = true; });
+    $('mins').addEventListener('blur', () => { editing = false; setMins($('mins').value); });
+    $('mins').addEventListener('input', markPreset);
+    $('mins').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); $('start').click(); } });
+    translateStatic();
+    markPreset();
+    window.addEventListener('pywebviewready', poll);
+    if (api()) poll();
+  </script>
+</body>
+</html>

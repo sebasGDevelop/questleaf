@@ -1,0 +1,9 @@
+pywebview>=5.0
+pyinstaller>=6.0
+pillow>=10.0
+winrt-runtime>=2.0
+winrt-Windows.Media.Control>=2.0
+winrt-Windows.Foundation>=2.0
+winrt-Windows.Foundation.Collections>=2.0
+winrt-Windows.Storage.Streams>=2.0
+pycaw>=20230407

@@ -1,0 +1,57 @@
+/* Habits: the week table, checks, streaks and the days each habit is due. */
+
+.week-progress { font-family: var(--pixel); font-size: 14px; color: var(--muted); margin: 4px 0 6px; }
+.table-card { overflow-x: auto; }
+.habit-table { width: 100%; border-collapse: collapse; min-width: 640px; }
+.habit-table th, .habit-table td { padding: 6px 4px; text-align: center; border-bottom: 2px dashed var(--line); }
+.habit-table thead th { font-family: var(--pixel); font-size: 14px; color: var(--title); font-weight: normal; }
+.habit-table thead th small { display: block; font-family: var(--body); font-size: 17px; color: var(--muted); margin-top: 4px; }
+.habit-table thead th:first-child { text-align: left; }
+.habit-table th.today, .habit-table td.today { background: rgba(246, 211, 138, .2); }
+:root[data-theme="night"] .habit-table th.today, :root[data-theme="night"] .habit-table td.today { background: rgba(255, 211, 107, .1); }
+.h-name {
+  display: flex; align-items: center; gap: 8px; width: 100%; text-align: left;
+  padding: 4px 8px 4px 4px; background: none; border: 0; cursor: pointer; font-size: 21px;
+}
+.h-name:hover { background: var(--paper2); }
+.h-ico {
+  flex: none;
+  display: grid;
+  place-items: center;
+  background: var(--c);
+  border: 2px solid var(--frame-dark);
+  font-family: var(--emoji);
+  font-size: 16px;
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, .6), inset 0 -3px 0 rgba(91, 67, 50, .18), 0 2px 0 var(--frame-dark);
+  width: 38px;
+  height: 38px;
+  border-radius: 6px;
+}
+.hcheck {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  cursor: pointer;
+  background: #fffdf7;
+  border: 2px solid var(--frame-dark);
+  font-family: var(--pixel);
+  font-size: 20px;
+  color: var(--ink);
+  border-radius: 5px;
+  box-shadow: inset 0 2px 0 rgba(91, 67, 50, .15), 0 2px 0 rgba(91, 67, 50, .25);
+}
+.hcheck:hover:not(:disabled) { background: color-mix(in srgb, var(--c) 40%, #fff); }
+.hcheck.on { background: var(--c); }
+.habit-table td.off .hcheck:not(.on) { opacity: .55; border-style: dashed; border-color: var(--muted); box-shadow: none; }
+
+/* not due that day */
+.h-label { display: flex; flex-direction: column; min-width: 0; }
+.h-days { font-size: var(--fs-label); color: var(--muted); letter-spacing: .5px; }
+.hcheck:disabled { opacity: .3; cursor: default; box-shadow: none; }
+.h-streak { font-size: 20px; white-space: nowrap; }
+:root[data-theme="night"] .hcheck {
+  background: #0f1236; color: var(--ink);
+}
+:root[data-theme="night"] .hcheck.on { color: var(--on-color); }
+.h-ico .ico-img { width: 32px; height: 32px; }
+.anim-on .hcheck:active { transform: translate(2px, 2px) scale(.96); }

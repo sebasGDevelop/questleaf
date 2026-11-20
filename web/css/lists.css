@@ -1,0 +1,96 @@
+/* Lists: list cards, items, money lists (price, currency, cycle) and repeating to-dos. */
+
+.cleared {
+  margin-top: 10px;
+  padding: 8px;
+  text-align: center;
+  font-family: var(--pixel);
+  font-size: 15px;
+  background: var(--butter);
+  border: 2px solid var(--border);
+}
+:root[data-theme="night"] .cleared { color: var(--on-color); }
+.list-cards { display: flex; flex-direction: column; gap: 8px; }
+.list-card {
+  display: flex; align-items: center; gap: 12px; padding: 8px 12px; cursor: pointer; text-align: left;
+  background: var(--card); border: 2px solid var(--border); border-left: 8px solid var(--c); border-radius: 6px;
+  box-shadow: 0 3px 0 var(--shadow); color: var(--ink);
+}
+.list-card:hover { background: color-mix(in srgb, var(--c) 18%, var(--card)); }
+.list-card.sel { background: color-mix(in srgb, var(--c) 35%, var(--card)); box-shadow: 0 0 0 3px var(--title); }
+:root[data-theme="night"] .list-card.sel { background: color-mix(in srgb, var(--c) 18%, var(--card)); }
+:root[data-theme="night"] .list-card small, :root[data-theme="night"] .lp-summary small { color: var(--ink); opacity: .85; }
+:root[data-theme="night"] .lp-summary > span { background: color-mix(in srgb, var(--c) 16%, var(--card)); }
+.lc-ico {
+  display: grid;
+  place-items: center;
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, .55), inset 0 -3px 0 rgba(0, 0, 0, .08);
+  width: 48px;
+  height: 48px;
+  flex: none;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--c, var(--rc, #e9dcc0)) 38%, var(--card));
+  border: 2px solid color-mix(in srgb, var(--c, var(--rc, #b89a74)) 50%, var(--border));
+}
+.lc-ico .ico-img { width: 36px; height: 32px; }
+.lc-ico.big { width: 48px; height: 58px; }
+.lc-ico.big .ico-img { width: 48px; height: 48px; }
+.lc-text { display: flex; flex-direction: column; min-width: 0; }
+.lc-text b { font-weight: normal; font-size: 21px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lc-text small { color: var(--muted); font-size: 17px; }
+.lp-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.lp-head .detail-title { flex: 1; margin: 0; text-align: left; }
+.lp-add { display: flex; gap: 8px; margin-bottom: 12px; }
+.lp-add input[name="text"] { flex: 1; min-width: 0; }
+.lp-add .lp-qty { width: 76px; flex: none; }
+.lp-add input[type="date"] { width: 150px; flex: none; }
+.lp-add .btn { flex: none; width: 46px; padding: 0; font-size: 22px; }
+
+/* Money lists: the name on its own row, then price, currency, cycle / quantity, date */
+.lp-add.wide { flex-wrap: wrap; }
+.lp-add.wide input[name="text"] { flex-basis: 100%; }
+.lp-add .lp-price { width: 110px; flex: 1 1 110px; }
+.lp-add .lp-cur { width: 64px; flex: none; text-align: center; }
+.lp-add select { width: auto; flex: 1 1 120px; }
+.lp-kind { display: block; font-family: var(--body); font-size: var(--fs-label); color: var(--muted); letter-spacing: .5px; }
+.lp-summary { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-bottom: var(--sp-3); }
+.lp-summary > span { display: flex; flex-direction: column; gap: 2px; padding: 6px 12px; border-radius: 8px;
+  background: color-mix(in srgb, var(--c) 30%, var(--card)); border: 2px solid color-mix(in srgb, var(--c) 60%, var(--border)); }
+.lp-summary small { font-family: var(--pixel); font-size: 12px; letter-spacing: .5px; color: var(--muted); }
+.lp-summary b { font-weight: normal; font-size: var(--fs-sm); }
+.li-link { text-decoration: none; display: grid; place-items: center; }
+.kind-grid .seg { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 6px; }
+.li-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.li-item {
+  display: flex; align-items: center; gap: 10px; padding: 7px 10px;
+  background: var(--paper); border: 2px solid var(--line); border-left: 6px solid var(--c); border-radius: 5px;
+}
+.li-item:hover { border-color: var(--border); border-left-color: var(--c); }
+.li-text { flex: 1; min-width: 0; font-size: 20px; overflow-wrap: anywhere; cursor: default; }
+.li-item.done .li-text { text-decoration: line-through; color: var(--muted); }
+.li-qty { flex: none; padding: 1px 9px; border-radius: 999px; background: color-mix(in srgb, var(--c) 45%, var(--card)); font-size: 17px; }
+:root[data-theme="night"] .li-qty { background: color-mix(in srgb, var(--c) 25%, var(--card)); }
+.li-due { flex: none; padding: 1px 9px; border-radius: 999px; background: var(--paper2); color: var(--muted); font-size: 16px; }
+.li-due.today { background: var(--butter); color: var(--on-color); }
+.li-due.late { background: var(--alert); color: var(--on-alert); }
+
+/* overdue: the same red everywhere */
+.li-del { opacity: 0; transition: opacity .1s; }
+.li-item:hover .li-del, .li-del:focus-visible, .li-item:hover .li-edit, .li-edit:focus-visible { opacity: 1; }
+.li-edit { opacity: 0; }
+.lp-done-head { display: flex; align-items: center; justify-content: space-between; margin: 16px 0 8px; }
+.lp-done-head .link-btn { margin: 0; text-decoration: none; }
+:root[data-theme="night"] .li-due.late { color: var(--on-alert); }
+.lc-ico { display: inline-grid; place-items: center; }
+.lc-ico.big { width: 58px; }
+.list-card .lc-ico { --c: inherit; }
+.li-pin { opacity: .35; }
+.li-pin.on { opacity: 1; }
+.li-item:hover .li-pin { opacity: 1; }
+.lc-ico .ico-img { width: 32px; }
+
+/* Repeating to-dos */
+.li-rep { opacity: .3; font-size: 15px; }
+.li-rep.on { opacity: .9; color: var(--title); }
+.li-item:hover .li-rep { opacity: .8; }
+.li-rep small { font-size: 12px; margin-left: 1px; }

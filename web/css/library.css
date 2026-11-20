@@ -1,0 +1,26 @@
+/* Book and movie details (features/library.js): covers, tags and quotes. */
+
+.tag-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.tag-sep { width: 2px; height: 20px; margin: 0 2px; background: var(--border); }
+.bquotes { display: flex; flex-direction: column; gap: 6px; margin-bottom: 6px; }
+.bquote { display: flex; align-items: flex-start; gap: 6px; padding: 6px 8px; background: var(--card); border-left: 4px solid var(--title); border-radius: 4px; }
+.bquote p { flex: 1; margin: 0; font-style: italic; }
+.bquote.sent { opacity: .7; }
+.bq-form { display: flex; gap: 6px; }
+.bq-form input { flex: 1; min-width: 0; }
+.cover-search { display: flex; gap: 8px; margin-bottom: 12px; }
+.cover-search input { flex: 1; }
+.cover-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; }
+.cover-opt { display: flex; flex-direction: column; gap: 4px; padding: 4px; cursor: pointer; background: var(--card); border: 2px solid var(--border); border-radius: 8px; color: var(--ink); }
+.cover-opt:hover { border-color: var(--title); }
+.cover-opt img { width: 100%; aspect-ratio: 2 / 3; object-fit: cover; border-radius: 4px; background: #e9dcc0; }
+.cover-opt small { font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.movie-detail { display: flex; gap: 18px; }
+.poster { flex: none; width: 170px; height: 250px; padding: 0; cursor: pointer; overflow: hidden; display: grid; place-items: center; font-size: 30px;
+  background: color-mix(in srgb, #f3e7a1 45%, var(--card)); border: 3px solid var(--frame-dark); border-radius: 8px; }
+.poster img { width: 100%; height: 100%; object-fit: cover; }
+.md-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.cover-search input[type=search] {
+  background-image: url('../assets/icons/ui-search.png'); background-repeat: no-repeat; background-size: 22px 22px;
+  background-position: 10px center; padding-left: 40px; image-rendering: pixelated;
+}

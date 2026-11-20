@@ -1,0 +1,12 @@
+/* Animations shared by several components (each component keeps its own). */
+
+@keyframes bob { 50% { transform: translateY(-2px); } }
+@keyframes live {
+  50% { box-shadow: inset -4px -4px 0 rgba(122, 92, 69, .16), inset 4px 4px 0 rgba(255, 255, 255, .45), 0 0 0 3px var(--title), 3px 3px 0 var(--shadow); }
+}
+@keyframes fade { from { opacity: 0; } }
+@keyframes pop { from { transform: scale(.88); } }
+@keyframes shine { 0% { opacity: 1; transform: translateX(-60%); } 100% { opacity: 0; transform: translateX(60%); } }
+@keyframes bag-in { from { transform: translateY(14px) scale(.98); opacity: 0; } }
+@keyframes pet-bob { 50% { transform: translateY(calc(var(--ps) / -32)); } }
+@keyframes sep-in { from { transform: scaleX(0); } } /* the dash is traced from left to right */

@@ -1,0 +1,38 @@
+/* Pet: the beast, its room, accessories and moods. */
+
+.pet { position: relative; display: inline-block; flex: none; width: var(--ps); height: var(--ps); }
+.pet img { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; }
+.anim-on .pet:not(.pet-asleep):not(.st-0) { animation: pet-bob 2.4s steps(1) infinite; }
+.anim-on .pet.st-0 { animation: egg-wobble 5s steps(1) infinite; transform-origin: 50% 90%; }
+.pet.hop { animation: pet-hop .55s steps(4) !important; }
+.pet-heart { position: absolute; left: 50%; top: 0; opacity: 0; pointer-events: none; font-style: normal; }
+.pet-heart::before { content: '♥'; font: calc(var(--ps) / 5) / 1 var(--pixel); color: #ec8274; text-shadow: 0 2px 0 #85303d; }
+.pet.hop .pet-heart { animation: pet-heart .9s steps(6); }
+.pet-asleep::after { content: 'z'; position: absolute; right: 8%; top: 4%; font: calc(var(--ps) / 5) / 1 var(--pixel); color: var(--muted); }
+.anim-on .pet-asleep::after { animation: pet-z 3s steps(6) infinite; }
+.pet-say {
+  position: absolute; left: 50%; bottom: 100%; transform: translateX(-50%); white-space: nowrap; z-index: 3; pointer-events: none;
+  padding: 3px 8px; font: 15px var(--body); color: #4a3b32; background: #fff7e8; border: 2px solid #5b4332; border-radius: 8px;
+}
+
+/* level with the greeting row */
+.pet-room { display: flex; gap: 20px; align-items: center; }
+.pet-stage-box { flex: none; display: grid; place-items: center; width: 190px; height: 190px; border-radius: 12px; cursor: pointer;
+  background: radial-gradient(circle at 50% 70%, color-mix(in srgb, #7bcbbb 35%, transparent), transparent 70%), var(--card); border: 3px solid var(--border); }
+.pet-info { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+.pet-line { margin: 0; color: var(--muted); }
+.pet-line b { color: var(--title); font-family: var(--pixel); font-weight: normal; font-size: 20px; }
+.pet-sub { margin: 18px 0 8px; font: 17px var(--pixel); color: var(--title); }
+.pet-accs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.pet-acc-card { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px 4px; cursor: pointer;
+  background: var(--card); border: 2px solid var(--border); border-radius: 10px; color: var(--ink); font: 14px var(--body); }
+.pet-acc-card.on { border-color: var(--title); box-shadow: 0 0 0 2px color-mix(in srgb, var(--title) 35%, transparent); }
+.pet-acc-card b { font: 14px var(--body); }
+.pet-acc-card b .ico-img { width: 16px; height: 16px; vertical-align: -3px; }
+.pac-img { position: relative; width: 64px; height: 64px; }
+.pac-img img { position: absolute; inset: 0; width: 64px; height: 64px; image-rendering: pixelated; }
+.pet-egg-note { margin: -4px 0 8px; }
+@keyframes egg-wobble { 0%, 80%, 100% { transform: rotate(0); } 84% { transform: rotate(-5deg); } 88% { transform: rotate(5deg); } 92% { transform: rotate(-3deg); } }
+@keyframes pet-hop { 40% { transform: translateY(calc(var(--ps) / -8)); } }
+@keyframes pet-heart { 0% { opacity: 1; transform: translate(-50%, 0); } 100% { opacity: 0; transform: translate(-50%, calc(var(--ps) / -3)); } }
+@keyframes pet-z { 0% { opacity: 0; transform: translate(0, 0); } 30% { opacity: 1; } 100% { opacity: 0; transform: translate(6px, -12px); } }

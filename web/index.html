@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Questleaf</title>
+  <link rel="icon" href="icon.png">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/icons.css">
+  <link rel="stylesheet" href="css/buttons.css">
+  <link rel="stylesheet" href="css/forms.css">
+  <link rel="stylesheet" href="css/cards.css">
+  <link rel="stylesheet" href="css/modal.css">
+  <link rel="stylesheet" href="css/feedback.css">
+  <link rel="stylesheet" href="css/book.css">
+  <link rel="stylesheet" href="css/hud.css">
+  <link rel="stylesheet" href="css/sky.css">
+  <link rel="stylesheet" href="css/profile.css">
+  <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="css/schedule.css">
+  <link rel="stylesheet" href="css/calendar.css">
+  <link rel="stylesheet" href="css/lists.css">
+  <link rel="stylesheet" href="css/notes.css">
+  <link rel="stylesheet" href="css/habits.css">
+  <link rel="stylesheet" href="css/workout.css">
+  <link rel="stylesheet" href="css/university.css">
+  <link rel="stylesheet" href="css/workflow.css">
+  <link rel="stylesheet" href="css/books.css">
+  <link rel="stylesheet" href="css/library.css">
+  <link rel="stylesheet" href="css/movies.css">
+  <link rel="stylesheet" href="css/birthdays.css">
+  <link rel="stylesheet" href="css/quotes.css">
+  <link rel="stylesheet" href="css/quests.css">
+  <link rel="stylesheet" href="css/memories.css">
+  <link rel="stylesheet" href="css/backpack.css">
+  <link rel="stylesheet" href="css/shop.css">
+  <link rel="stylesheet" href="css/focus.css">
+  <link rel="stylesheet" href="css/pet.css">
+  <link rel="stylesheet" href="css/workshop.css">
+  <link rel="stylesheet" href="css/search.css">
+  <link rel="stylesheet" href="css/sanctuary.css">
+  <link rel="stylesheet" href="css/settings.css">
+  <link rel="stylesheet" href="css/entry.css">
+  <link rel="stylesheet" href="css/motion.css">
+</head>
+<body>
+  <!-- Static texts are filled from the dictionaries (data-i18n*) by translateStatic() during boot -->
+  <canvas id="fxCanvas" aria-hidden="true"></canvas>
+
+  <!-- ===== Top bar (HUD) ===== -->
+  <header class="hud">
+    <button class="icon-btn nav-toggle" id="navToggle" data-i18n-title="hud.menuToggle" data-i18n-aria-label="hud.menuToggle">☰</button>
+    <button class="brand" data-go="home" data-i18n-title="hud.goHome">
+      <span class="brand-icon"><img src="icon.png" alt=""></span>
+      <span class="brand-text">QUEST<span class="accent">LEAF</span></span>
+    </button>
+
+    <span class="hud-spacer"></span>
+
+    <!-- Compact profile button: opens the drawer with character, stats and achievements -->
+    <button class="profile-btn" id="profileBtn" data-i18n-title="hud.profile" data-i18n-aria-label="hud.profileAria">
+      <span class="pb-photo" id="hudPhoto" aria-hidden="true"></span>
+      <span class="pb-info">
+        <b id="playerName"></b>
+        <small id="playerTitle"></small>
+        <span class="xpbar mini" id="hudXp"><span class="xpfill" id="xpFill"></span></span>
+      </span>
+    </button>
+
+    <button class="streak-chip" id="streakChip" data-i18n-aria-label="hud.streak"></button>
+    <button class="stone-chip" id="shopBtn" data-i18n-title="hud.shop" data-i18n-aria-label="hud.shopAria"></button>
+
+    <div class="hud-actions">
+      <button class="icon-btn" id="sanctuaryBtn" data-i18n-title="hud.sanctuary" data-i18n-aria-label="hud.sanctuaryAria"></button>
+      <button class="icon-btn" id="bagBtn" data-i18n-title="hud.backpack" data-i18n-aria-label="hud.backpackAria"></button>
+      <button class="icon-btn" id="themeBtn" data-i18n-title="hud.theme" data-i18n-aria-label="hud.theme">🌙</button>
+      <button class="icon-btn" id="helpBtn" data-i18n-title="hud.help" data-i18n-aria-label="hud.helpAria">❓</button>
+      <button class="icon-btn" id="soundBtn" data-i18n-title="hud.sound" data-i18n-aria-label="hud.soundAria">🔊</button>
+      <button class="icon-btn" id="settingsBtn" data-i18n-title="hud.settings" data-i18n-aria-label="hud.settings">⚙️</button>
+    </div>
+  </header>
+
+  <div class="shell">
+    <!-- ===== Menu ribbons ===== -->
+    <nav class="ribbons" id="ribbons" data-i18n-aria-label="hud.sectionsNav"></nav>
+
+    <!-- ===== The book ===== -->
+    <main class="book">
+      <section class="view" id="view-home"></section>
+
+      <section class="view" id="view-schedule" hidden>
+        <div class="page-head">
+          <div>
+            <h1 class="page-title"><span class="pt-icon" style="--rc:#a9cbe8">🗓️</span><span data-i18n="schedule.pageTitle"></span></h1>
+          </div>
+        </div>
+        <div class="schedule-layout">
+          <aside class="card inventory">
+            <h2 class="card-title"><span class="inv-title" data-i18n="schedule.inventory"></span>
+              <button class="icon-mini inv-fold" id="inventoryFold"></button></h2>
+            <!-- Tab labels are drawn by horario.js -->
+            <div class="tabs" role="tablist">
+              <button class="tab active" data-tab="subject" role="tab"></button>
+              <button class="tab" data-tab="personal" role="tab"></button>
+            </div>
+            <ul id="activityList" class="activity-list" data-paged="inventory" data-pager="inside" data-paged-reserve="150"></ul>
+            <button class="btn btn-primary full btn-add" id="newActivityBtn" data-i18n-title="schedule.newItem" data-i18n-aria-label="schedule.newItem">+</button>
+          </aside>
+
+          <div class="board">
+            <div class="board-toolbar">
+              <button class="btn btn-small" id="prevWeek" data-i18n-aria-label="schedule.previousWeek">◀</button>
+              <div class="week-label" id="weekLabel"></div>
+              <button class="btn btn-small" id="nextWeek" data-i18n-aria-label="schedule.nextWeek">▶</button>
+              <button class="btn btn-small" id="todayBtn" data-i18n="schedule.today"></button>
+              <button class="btn btn-small" id="sideToggle" data-i18n-title="schedule.sidePanel" data-i18n-aria-label="schedule.sidePanel">📋</button>
+            </div>
+            <div id="emptyHint" class="banner hidden"></div>
+            <div id="paintBanner" class="banner paint hidden"></div>
+            <div class="grid-wrap"><div id="grid" class="grid"></div></div>
+          </div>
+
+          <!-- Side panel: today's quests or the week stats, one at a time, as tall as the grid -->
+          <aside class="schedule-side">
+            <section class="card side-card">
+              <div class="tabs side-tabs" role="tablist" data-i18n-aria-label="schedule.sidePanel">
+                <button class="tab" role="tab" data-side-tab="quests" data-i18n="schedule.questsTab"></button>
+                <button class="tab" role="tab" data-side-tab="stats" data-i18n="schedule.statsTab"></button>
+              </div>
+              <div class="side-pane quests" data-side-pane="quests" role="tabpanel">
+                <div id="questHead"></div>
+                <ul id="questList" class="quest-list"></ul>
+              </div>
+              <div class="side-pane" data-side-pane="stats" role="tabpanel" hidden><div id="stats"></div></div>
+            </section>
+          </aside>
+        </div>
+      </section>
+
+      <section class="view" id="view-calendar" hidden></section>
+      <section class="view" id="view-lists" hidden></section>
+      <section class="view" id="view-notes" hidden></section>
+      <section class="view" id="view-habits" hidden></section>
+      <section class="view" id="view-workout" hidden></section>
+      <section class="view" id="view-university" hidden></section>
+      <section class="view" id="view-books" hidden></section>
+      <section class="view" id="view-movies" hidden></section>
+      <section class="view" id="view-birthdays" hidden></section>
+      <section class="view" id="view-quotes" hidden></section>
+      <section class="view" id="view-workflow" hidden></section>
+    </main>
+  </div>
+
+  <!-- Profile drawer (opened from the profile button) -->
+  <div id="drawerBackdrop" class="drawer-backdrop" hidden></div>
+  <aside id="profileDrawer" class="drawer" data-i18n-aria-label="hud.profileDrawer" hidden></aside>
+  <input type="file" id="photoInput" accept="image/*" hidden>
+
+  <div id="trash" class="trash" aria-hidden="true"><span id="trashIco">🗑️</span> <span data-i18n="hud.dropToDelete"></span></div>
+  <div id="modalRoot"></div>
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+
+  <!-- 1. Internationalization: engine first, then one dictionary per language -->
+  <script src="js/i18n/i18n.js"></script>
+  <script src="js/i18n/es.js"></script>
+  <script src="js/i18n/en.js"></script>
+  <!-- 2. Optional first-run content (a local file, not in the repository: without it the app starts empty) and core
+       (order matters: each file only uses what the previous ones define at load time) -->
+  <script src="js/data-notion.js"></script>
+  <script src="js/core/utils.js"></script>
+  <script src="js/core/icons.js"></script>
+  <script src="js/core/constants.js"></script>
+  <script src="js/core/state.js"></script>
+  <script src="js/core/migrations.js"></script>
+  <script src="js/core/storage.js"></script>
+  <script src="js/core/progress.js"></script>
+  <script src="js/core/audio.js"></script>
+  <script src="js/core/effects.js"></script>
+  <script src="js/core/modal.js"></script>
+  <script src="js/core/hud.js"></script>
+  <script src="js/core/app.js"></script>
+  <!-- 3. Views (sections) and then features. Keep this order: some features extend view functions at load time -->
+  <script src="js/views/schedule.js"></script>
+  <script src="js/views/shared.js"></script>
+  <script src="js/views/home.js"></script>
+  <script src="js/views/habits.js"></script>
+  <script src="js/views/workout.js"></script>
+  <script src="js/views/university.js"></script>
+  <script src="js/views/books.js"></script>
+  <script src="js/views/movies.js"></script>
+  <script src="js/views/birthdays.js"></script>
+  <script src="js/views/quotes.js"></script>
+  <script src="js/views/calendar.js"></script>
+  <script src="js/views/lists.js"></script>
+  <script src="js/views/notes.js"></script>
+  <script src="js/views/workflow.js"></script>
+  <script src="js/features/shop.js"></script>
+  <script src="js/features/focus.js"></script>
+  <script src="js/features/reminders.js"></script>
+  <script src="js/features/challenges.js"></script>
+  <script src="js/features/sky.js"></script>
+  <script src="js/features/music.js"></script>
+  <script src="js/features/look.js"></script>
+  <script src="js/features/backpack.js"></script>
+  <script src="js/features/sanctuary.js"></script>
+  <script src="js/features/pet.js"></script>
+  <script src="js/features/world.js"></script>
+  <script src="js/features/quests.js"></script>
+  <script src="js/features/workshop.js"></script>
+  <script src="js/features/memories.js"></script>
+  <script src="js/features/library.js"></script>
+  <script src="js/features/desktop.js"></script>
+  <script src="js/features/search.js"></script>
+  <script src="js/features/recurring.js"></script>
+  <script src="js/features/news.js"></script>
+  <script src="js/features/layout.js"></script>
+  <!-- 4. Profiles, language and settings -->
+  <script src="js/settings/profiles.js"></script>
+  <script src="js/settings/language.js"></script>
+  <script src="js/settings/settings.js"></script>
+  <script>boot();</script>
+</body>
+</html>

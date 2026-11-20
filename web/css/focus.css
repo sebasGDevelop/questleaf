@@ -1,0 +1,87 @@
+/* Focus: the focus window, its minutes, the pill, the plant and the breaks. */
+
+.focus-overlay {
+  position: fixed; inset: 0; z-index: 260; display: grid; place-items: center;
+  background: rgba(20, 16, 40, .55); backdrop-filter: blur(2px); animation: fade .2s steps(3);
+}
+.focus-overlay .magic-circle { pointer-events: none; }
+.focus-overlay.paused .magic-circle { animation-play-state: paused; opacity: .4; }
+.focus-box {
+  position: relative; z-index: 1; width: min(420px, 90vw); text-align: center; padding: 26px 30px;
+  background: var(--paper); border: 5px solid var(--border); border-radius: 8px;
+  box-shadow: 10px 10px 0 rgba(0, 0, 0, .25), inset 0 0 0 5px var(--butter);
+}
+.focus-name { font-family: var(--pixel); font-size: 22px; color: var(--title); }
+.focus-time { font-family: var(--pixel); font-size: 64px; line-height: 1.1; margin: 10px 0 14px; color: var(--ink); }
+.focus-box .btn-row { justify-content: center; margin-top: 16px; }
+.garden { display: flex; flex-wrap: wrap; gap: 0; }
+.garden img { width: 36px; height: 36px; margin: -2px; }
+.focus-plant { display: block; width: 130px; height: 130px; margin: -10px auto 0; image-rendering: auto; }
+.focus-plant.grow { animation: grow-pop .5s ease-out; }
+.focus-plant.done { filter: drop-shadow(0 0 14px rgba(255, 215, 90, .95)); }
+.focus-name .ico-img { width: 24px; height: 24px; vertical-align: -5px; }
+.focus-card .fc-body { display: flex; align-items: center; gap: 14px; }
+.fc-seed { width: 76px; height: 76px; flex: none; }
+.fc-controls { flex: 1; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.fc-mins { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.fc-mins .btn { min-width: 44px; }
+.fc-mins .btn.on { background: var(--butter); box-shadow: inset 0 0 0 2px var(--border); }
+.fc-unit { color: var(--muted); font-size: 18px; }
+.fc-controls select { width: 100%; }
+.fc-running { display: flex; align-items: center; gap: 12px; }
+.fc-running img { width: 64px; height: 64px; }
+.fc-running div { flex: 1; display: flex; flex-direction: column; }
+.fc-running b { font-family: var(--pixel); font-size: 30px; color: var(--title); line-height: 1; }
+.fc-running small { color: var(--muted); font-size: 17px; }
+
+/* Minimised focus pill (bottom right corner) */
+.focus-pill {
+  position: fixed;
+  bottom: 18px;
+  z-index: 150;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 14px 4px 6px;
+  cursor: pointer;
+  border: 2px solid var(--frame-dark);
+  border-radius: 999px;
+  background: linear-gradient(#fffaf0, #f3e6cc);
+  box-shadow: 0 3px 0 var(--frame-dark), 0 6px 16px rgba(0, 0, 0, .18);
+  font-family: var(--body);
+  font-size: 24px;
+  color: var(--title);
+  right: auto;
+  left: 18px;
+}
+.focus-pill img { width: 40px; height: 40px; }
+:root[data-theme="night"] .focus-pill { background: linear-gradient(#20255a, #181c48); box-shadow: 0 3px 0 #06071a, 0 6px 16px rgba(0, 0, 0, .4); }
+.focus-overlay[hidden] { display: none; }
+.btn.confirm { background: #e85d5d; color: #fff; }
+.fc-play { min-width: 64px; line-height: 1; font-size: 28px; }
+.focus-boss { display: inline-flex; align-items: center; gap: 8px; margin: -4px auto 8px; padding: 3px 10px; color: #fff7e8;
+  background: rgba(198, 77, 85, .25); border: 2px solid rgba(236, 130, 116, .6); border-radius: 8px; }
+.focus-boss .ico-img { width: 32px; height: 32px; }
+.min-step { display: inline-flex; align-items: center; gap: 2px; }
+.min-step .btn { min-width: 28px; padding-left: 0; padding-right: 0; }
+.min-input { width: 54px; text-align: center; font-family: var(--pixel); font-size: 20px; padding: 2px 4px; }
+.min-input::-webkit-inner-spin-button { display: none; }
+
+/* Pomodoro breaks */
+.break-offer {
+  position: fixed; left: 18px; bottom: 18px; z-index: 92; display: flex; align-items: center; gap: 10px; padding: 8px 10px 8px 12px; max-width: min(420px, calc(100vw - 36px));
+  background: var(--paper); border: 3px solid var(--frame-dark); border-radius: 12px; box-shadow: 0 8px 22px rgba(0, 0, 0, .28);
+}
+.anim-on .break-offer { animation: bag-in .2s ease-out; }
+.bo-ico .ico-img { width: 32px; height: 32px; }
+.bo-text { display: flex; flex-direction: column; }
+.bo-text b { font-weight: normal; color: var(--title); }
+.bo-text small { color: var(--muted); font-size: 14px; }
+.break-pill .ico-img { width: 32px; height: 32px; }
+.break-pill b { color: #3b8f8b; }
+.fc-break { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; padding: 6px 10px; border-radius: 8px; background: color-mix(in srgb, #7bcbbb 25%, var(--card)); border: 2px solid color-mix(in srgb, #3b8f8b 45%, var(--border)); }
+.fc-break .ico-img { width: 32px; height: 32px; }
+.fc-break span { flex: 1; color: var(--muted); }
+.fc-break b { font: 26px var(--pixel); color: #3b8f8b; }
+:root[data-theme="night"] .break-offer { background: #1c2054; }
+@keyframes grow-pop { 0% { transform: scale(.85); } 60% { transform: scale(1.08); } 100% { transform: scale(1); } }

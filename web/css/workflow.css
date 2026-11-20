@@ -1,0 +1,103 @@
+/* Workflow: one block per app with its jobs, project threads that light their apps, and whether each app pays off. */
+
+/* Threads: one chip per project (and per subject with deliverables); the lit one is filled with its colour */
+.wf-threads { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; margin-bottom: var(--sp-3); }
+.wf-thread { cursor: pointer; background: var(--card); color: var(--ink); font-size: var(--fs-sm); }
+.wf-thread.on { background: var(--c); color: var(--on-color); border-color: var(--title); }
+.wf-dot { display: inline-block; flex: none; width: 10px; height: 10px; background: var(--c); box-shadow: inset 0 0 0 2px rgba(47, 34, 48, .35); }
+
+/* The board: blocks in rows, turned like the pages of the book (no sideways scroll) */
+.wf-board { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--sp-4); align-items: start; }
+.wf-block { display: flex; flex-direction: column; gap: var(--sp-2); padding: 12px; border-radius: 8px; transition: opacity .2s steps(3);
+  background: color-mix(in srgb, var(--c) 16%, var(--card)); border: 2px solid color-mix(in srgb, var(--c) 55%, var(--border)); border-top-width: 6px; }
+.wf-block.over { box-shadow: 0 0 0 3px var(--title); }
+.wf-block.lit { box-shadow: 0 0 0 3px var(--title); }
+.wf-block.dim { opacity: .4; }
+.wf-block.idle { border-style: dashed; background: color-mix(in srgb, var(--c) 6%, var(--card)); }
+.wf-block.idle .item-icon { filter: grayscale(.8); }
+.wf-head { display: flex; align-items: center; gap: var(--sp-2); }
+.wf-head .item-icon .ico-img { width: 32px; height: 32px; }
+.wf-title { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.wf-title b { font-family: var(--pixel); font-size: var(--fs-btn); font-weight: normal; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wf-price { color: var(--muted); font-size: var(--fs-label); }
+
+/* How the app is used: one line while folded, pixel bullets when open */
+.wf-guide summary { display: flex; align-items: baseline; gap: 6px; cursor: pointer; font-size: var(--fs-label); color: var(--muted); }
+.wf-guide summary::before { content: '▸'; flex: none; }
+.wf-guide summary::-webkit-details-marker { display: none; }
+.wf-guide summary { list-style: none; }
+.wf-guide[open] summary::before { content: '▾'; }
+.wf-guide-sum { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink); }
+.wf-guide-label { display: none; text-transform: uppercase; }
+.wf-guide[open] .wf-guide-sum { display: none; }
+.wf-guide[open] .wf-guide-label { display: inline; }
+.wf-guide-list { list-style: none; margin: 6px 0 0; padding: 0 0 0 4px; display: flex; flex-direction: column; gap: 4px; font-size: var(--fs-sm); }
+.wf-guide-list li { display: flex; align-items: baseline; gap: 8px; overflow-wrap: anywhere; }
+.wf-guide-list li::before { content: ''; flex: none; width: 6px; height: 6px; transform: translateY(-2px); background: color-mix(in srgb, var(--c) 55%, var(--frame-dark)); }
+
+/* The threads of this app */
+.wf-tags { display: flex; flex-wrap: wrap; gap: 4px 10px; font-size: var(--fs-label); }
+.wf-tag { display: inline-flex; align-items: center; gap: 5px; }
+
+/* No work for 30 days: the alert and the days; red when the app is paid */
+.wf-idle { margin: 0; display: flex; align-items: center; gap: 6px; align-self: flex-start; padding: 2px 8px; border-radius: 6px; font-size: var(--fs-label);
+  background: color-mix(in srgb, var(--butter) 45%, var(--card)); color: var(--on-color); border: 2px solid transparent; }
+.wf-idle .ico-img { width: 16px; height: 16px; }
+.wf-idle.paid { background: var(--card); color: var(--alert); border-color: var(--alert); }
+
+/* Jobs */
+.wf-jobs { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.wf-job { display: flex; align-items: center; gap: var(--sp-2); padding: 4px 6px; background: var(--card); border: 2px solid var(--line); border-radius: 6px; cursor: grab; }
+.wf-job-name { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+button.wf-job-name { padding: 0; border: 0; background: none; text-align: left; cursor: pointer; }
+button.wf-job-name:hover { color: var(--title); }
+.wf-job.done .wf-job-name { text-decoration: line-through; color: var(--muted); }
+.wf-kind { display: grid; flex: none; }
+.wf-kind .ico-img { width: 20px; height: 20px; }
+.wf-when { flex: none; color: var(--muted); font-size: var(--fs-label); }
+.wf-when.late { color: var(--alert); }
+.wf-dots { display: flex; gap: 3px; flex: none; }
+
+/* Does it pay off? Finished in 30 days against the open ones, and the cost of each finished job */
+.wf-yield { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 8px; font-size: var(--fs-label); }
+.wf-yield b { font-weight: normal; font-family: var(--pixel); }
+.wf-yield small { color: var(--muted); font-size: var(--fs-label); }
+.wf-bar { display: flex; gap: 2px; }
+.wf-bar i { width: 10px; height: 10px; border: 2px solid color-mix(in srgb, var(--c) 45%, var(--frame-dark)); background: var(--card); }
+.wf-bar i.on { background: color-mix(in srgb, var(--c) 70%, var(--frame-dark)); }
+
+/* "+": a job of its own, a project, or a pending deliverable */
+.wf-foot { display: flex; align-items: center; gap: var(--sp-2); }
+.wf-plus { margin-left: auto; min-width: 40px; }
+.wf-add { display: flex; flex-direction: column; gap: 6px; }
+.wf-add-row { display: flex; gap: 6px; }
+.wf-add-row input { flex: 1; min-width: 0; }
+.wf-add-projects .chip { font-size: var(--fs-label); padding: 2px 8px; }
+.wf-pick { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.wf-pick:empty { display: none; }
+.wf-pick-item { width: 100%; display: flex; align-items: center; gap: 8px; padding: 4px 6px; text-align: left; cursor: pointer; font: inherit; color: var(--ink);
+  background: var(--card); border: 2px dashed color-mix(in srgb, var(--c) 60%, var(--border)); border-radius: 6px; }
+.wf-pick-item:hover, .wf-pick-item:focus-visible { border-style: solid; background: color-mix(in srgb, var(--c) 20%, var(--card)); }
+.wf-pick-item .ico-img { width: 20px; height: 20px; flex: none; }
+.wf-pick-item > span { display: flex; flex-direction: column; min-width: 0; }
+.wf-pick-item b { font-weight: normal; overflow-wrap: anywhere; }
+.wf-pick-item small { color: var(--muted); font-size: var(--fs-label); }
+.wf-done summary { cursor: pointer; color: var(--muted); font-size: var(--fs-label); margin-bottom: 6px; }
+
+/* No apps yet: one big "+" */
+.wf-empty { display: grid; place-items: center; gap: var(--sp-2); width: 220px; margin: 48px auto; padding: 24px; cursor: pointer;
+  background: var(--card); border: 3px dashed var(--border); border-radius: 12px; color: var(--title); font-family: var(--pixel); font-size: 32px; }
+.wf-empty .ico-img { width: 64px; height: 64px; }
+.wf-empty:hover, .wf-empty:focus-visible { border-style: solid; }
+
+/* App window: the price waits in a closed fold */
+.wf-price-fold summary { cursor: pointer; font-family: var(--pixel); font-size: var(--fs-label); color: var(--title); margin-bottom: 6px; }
+.wf-price-fold summary small { font-family: var(--body); color: var(--muted); margin-left: 6px; }
+
+/* The chronicle */
+.wf-week .wf-unused { opacity: .6; border-style: dashed; }
+
+:root[data-theme="night"] .wf-block { background: color-mix(in srgb, var(--c) 10%, var(--card)); }
+:root[data-theme="night"] .wf-block.idle { background: var(--card); }
+:root[data-theme="night"] .wf-idle { background: color-mix(in srgb, var(--butter) 18%, var(--card)); color: var(--ink); }
+:root[data-theme="night"] .wf-idle.paid { background: var(--card); color: var(--alert); }

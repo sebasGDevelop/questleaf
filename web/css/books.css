@@ -1,0 +1,98 @@
+/* Books: the shelf, spines, the open book and reading progress. */
+
+.spine:focus-visible { outline: 3px solid var(--title); outline-offset: 2px; }
+.shelf-title {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 8px;
+  margin: 18px 0 8px; font-family: var(--pixel); font-size: 15px; font-weight: normal; color: var(--title);
+}
+.shelf-title small { font-family: var(--body); font-size: 18px; color: var(--muted); }
+.shelf {
+  display: grid; grid-template-columns: repeat(auto-fill, 30px); grid-auto-rows: 142px;
+  gap: 0 4px; align-items: end; padding: 0 10px;
+  background: repeating-linear-gradient(to bottom, transparent 0 130px, #c99b6d 130px 138px, #a97c52 138px 142px);
+  border-left: 6px solid #a97c52; border-right: 6px solid #a97c52;
+}
+.spine {
+  position: relative; width: 30px; height: var(--h, 110px); margin-bottom: 12px; padding: 6px 0;
+  background: var(--c); border: 2px solid var(--border); border-radius: 2px 2px 0 0;
+  box-shadow: inset 4px 0 0 rgba(255, 255, 255, .45), inset -4px 0 0 rgba(122, 92, 69, .18);
+  cursor: pointer; overflow: hidden;
+  writing-mode: vertical-rl; text-orientation: mixed;
+  font-size: 16px; line-height: 1; white-space: nowrap; text-overflow: ellipsis;
+  transition: transform .1s steps(2);
+}
+.spine span { display: block; overflow: hidden; text-overflow: ellipsis; max-height: 100%; }
+.spine:hover { transform: translateY(-6px); }
+.spine.sel { transform: translateY(-10px); outline: 3px solid var(--title); }
+.spine.done::after {
+  content: ''; position: absolute; left: 0; right: 0; top: 10px; height: 6px;
+  background: #e8b84a; border-top: 2px solid var(--border); border-bottom: 2px solid var(--border);
+}
+.big-book {
+  position: relative;
+  width: 150px;
+  height: 200px;
+  margin: 0 auto 16px;
+  display: grid;
+  place-items: center;
+  padding: 18px 14px 18px 26px;
+  text-align: center;
+  background: var(--c);
+  border: 4px solid var(--border);
+  border-radius: 3px 8px 8px 3px;
+  box-shadow: inset 12px 0 0 rgba(122, 92, 69, .22), inset 16px 0 0 rgba(255, 255, 255, .35), 6px 6px 0 var(--shadow);
+  font-family: var(--pixel);
+  font-size: 15px;
+  line-height: 1.5;
+  overflow: hidden;
+  cursor: pointer;
+}
+.big-book span { display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden; }
+.detail-empty .big-book span { font-size: 40px; }
+.stamp {
+  position: absolute; right: -6px; bottom: 18px; transform: rotate(-12deg);
+  padding: 4px 8px; font-style: normal; font-size: 8px;
+  background: var(--sage); border: 3px solid var(--border);
+}
+.stars { display: flex; gap: 4px; }
+.star {
+  width: 36px; height: 36px; padding: 0; cursor: pointer;
+  background: var(--paper2); border: 2px solid var(--border); font-size: 22px; color: #cdbb9b;
+}
+.star.on { color: #d9971f; background: var(--lemon); }
+.spine {
+  border-width: 2px;
+}
+.big-book {
+  border-width: 2px;
+}
+.stamp {
+  border-width: 2px;
+}
+.star {
+  border-width: 2px;
+}
+.spine {
+  border-color: var(--frame-dark);
+}
+.spine { border-radius: 3px 3px 0 0; }
+.big-book { border-width: 3px; border-color: var(--frame-dark); }
+:root[data-theme="night"] .stamp,
+:root[data-theme="night"] .spine,
+:root[data-theme="night"] .big-book { color: var(--on-color); }
+
+/* Books: the "reading" divider and the progress bar */
+.spine.reading::before {
+  content: ''; position: absolute; top: 0; right: 3px; width: 7px; height: 18px; z-index: 1;
+  background: #c0392b; clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 72%, 0 100%);
+}
+.spine.r4 { box-shadow: inset 4px 0 0 rgba(255, 255, 255, .45), inset 0 0 0 2px #6f9ee0, 0 0 7px rgba(111, 158, 224, .75); }
+.spine.r5 { box-shadow: inset 4px 0 0 rgba(255, 255, 255, .45), inset 0 0 0 2px #e0b23a, 0 0 9px rgba(255, 205, 80, .9); }
+.big-book.r4 { box-shadow: 0 0 0 3px #6f9ee0, 0 0 18px rgba(111, 158, 224, .7); }
+.big-book.r5 { box-shadow: 0 0 0 3px #e0b23a, 0 0 22px rgba(255, 205, 80, .9); }
+.big-book { position: relative; padding: 0; }
+.big-book.has-cover { background: #2f2230; }
+.big-book.has-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cover-hint { position: absolute; right: 6px; bottom: 6px; font-style: normal; font-size: 16px; opacity: 0; transition: opacity .2s; }
+.big-book:hover .cover-hint { opacity: .9; }
+.book-author { margin: -6px 0 10px; color: var(--muted); }

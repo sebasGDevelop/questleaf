@@ -1,0 +1,98 @@
+/* Design tokens: colours, frame and gem art, type and spacing scales; the night theme, the accents and the leathers. */
+
+:root {
+  --bg: #ebe3cf;
+  --bg-dot: #dcd0b4;
+  --paper: #fbf6ea;
+  --paper2: #f3e9d2;
+  --card: #fffbf2;
+  --line: #e5d6b7;
+  --ink: #4a3b32;
+  --muted: #746657;
+  --alert: #c23a3a;
+  /* red for "new" and "due soon": dots, badges, highlights (white text on it) */
+  --on-alert: #ffffff;
+  /* 4.5:1 on paper and cards (WCAG AA) */
+  --on-color: #4a3b32;
+  /* text on pastel / coloured surfaces, in both themes (night: dark too) */
+  --border: #7a5c45;
+  --shadow: rgba(122, 92, 69, .28);
+  --title: #995530;
+  /* terracotta, dark enough for small text (AA) */
+  --peach: #f6c49a;
+  --butter: #f6d38a;
+  --lemon: #f3e7a1;
+  --sage: #a8d8a0;
+  --mint: #9fd9c9;
+  --sky: #a9cbe8;
+  --peri: #b8b4ec;
+  --lilac: #d9b3e6;
+  --pink: #efb3d0;
+  --rose: #f7a8a8;
+  --sand: #d8cbb8;
+  --row-h: 62px;
+  --pixel: 'Aventura Px', 'DotGothic16', monospace;
+  --body: 'Aventura', 'DotGothic16', monospace;
+  --emoji: 'Aventura Px', 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
+  /* Type scale (rule R1): no other sizes */
+  --fs-label: 14px;
+  /* field labels, kbd, counters */
+  --fs-btn: 17px;
+  /* buttons, tabs, card and section titles */
+  --fs-sm: 18px;
+  /* secondary text, hints, chips */
+  --fs-body: 20px;
+  /* text, fields and checkboxes */
+  --fs-title: 24px;
+  /* title of a panel inside a window */
+  --fs-page: 29px;
+  /* page title */
+  /* Spacing scale (R2) */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --frame-dark: #5b4332;
+  --frame-mid: #a27b55;
+  --frame-light: #ead4ad;
+  --hi: rgba(255, 255, 255, .72);
+  --rivet: radial-gradient(circle, #fbe7bd 0 1.5px, #c79a5f 2px 3px, #5b4332 3.4px, transparent 4px);
+  --gem: radial-gradient(circle, #fff3c4 0 2px, #f0b84f 2.5px 4px, #9a6a2c 4.5px 5.5px, #5b4332 6px, transparent 6.6px);
+}
+:root[data-theme="night"] {
+  color-scheme: dark;
+  --bg: #0c0e29;
+  --bg-dot: #1f2458;
+  --paper: #171b44;
+  --paper2: #20255a;
+  --card: #1b1f4f;
+  --line: #2f3577;
+  --ink: #f1edff;
+  --muted: #a3a9dc;
+  --border: #070818;
+  --shadow: rgba(0, 0, 0, .5);
+  --title: #ffd36b;
+  --frame-dark: #06071a;
+  --frame-mid: #3b2f6b;
+  --frame-light: #39408f;
+  --hi: rgba(255, 255, 255, .14);
+  --rivet: radial-gradient(circle, #fff1b8 0 1.5px, #d9a441 2px 3px, #3a2a10 3.4px, transparent 4px);
+  --peach: #ffb98a; --butter: #ffd36b; --lemon: #f6e889; --sage: #8fe3a0; --mint: #7fe6d2;
+  --sky: #8fc3ff; --peri: #a9a3ff; --lilac: #d1a8ff; --pink: #ff9fd0; --rose: #ff8f9f; --sand: #c9b9a0;
+  --on-color: #1d1636;               /* text on coloured backgrounds */
+  --leather: #7a5c24;                /* the leather band around the book and the windows (brown) */
+  --alert: #ff7a86; --on-alert: #1d1636;
+  background: #0c0e29;
+}
+
+/* The day background warms up at dawn and at dusk */
+:root[data-theme="day"][data-phase="dawn"] { --bg: #eedbd3; --bg-dot: #dfc5bd; }
+:root[data-theme="day"][data-phase="dusk"] { --bg: #ecd5b6; --bg-dot: #dcbf98; }
+:root[data-accent="gold"] { --title: #856210; }
+:root[data-accent="emerald"] { --title: #287554; }
+:root[data-accent="sapphire"] { --title: #3a64b0; }
+:root[data-accent="amethyst"] { --title: #894eae; }
+:root[data-theme="night"][data-accent="emerald"] { --title: #7fe0b2; }
+:root[data-theme="night"][data-accent="sapphire"] { --title: #9fc0ff; }
+:root[data-theme="night"][data-accent="amethyst"] { --title: #dcb0ff; }

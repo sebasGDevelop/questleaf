@@ -1,0 +1,52 @@
+/* Birthdays: cards and the next birthday. */
+
+.bday-actions {
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity .1s;
+  position: absolute;
+  right: 6px;
+  top: -14px;
+  padding: 3px;
+  background: var(--card);
+  border: 2px solid var(--border);
+}
+.bday:hover .bday-actions,
+.bday:focus-within .bday-actions { opacity: 1; }
+.bday-next { margin-bottom: 22px; }
+.bday-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; }
+.bday-actions .icon-mini { width: 24px; height: 24px; font-size: 12px; }
+.bday {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  background: var(--card);
+  border: 2px solid var(--frame-dark);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, .6), 0 2px 0 var(--frame-dark), 0 4px 0 rgba(91, 67, 50, .12);
+  border-radius: 6px;
+}
+.bday.is-today { background: var(--butter); }
+.anim-on .bday.is-today { animation: live 1s steps(2) infinite; }
+.bday.nodate { border-style: dashed; cursor: pointer; }
+.bday-ini {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  background: var(--c);
+  border: 2px solid var(--frame-dark);
+  font-family: var(--pixel);
+  font-size: 24px;
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, .6), inset 0 -3px 0 rgba(91, 67, 50, .18), 0 2px 0 var(--frame-dark);
+  border-radius: 6px;
+}
+.bday-text { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.bday-text b { font-weight: normal; font-size: 22px; }
+.bday-text small { color: var(--muted); font-size: 18px; }
+.bday-when { font-family: var(--pixel); font-size: 13px; color: var(--title); text-align: right; white-space: nowrap; }
+:root[data-theme="night"] .bday-ini,
+:root[data-theme="night"] .bday.is-today { color: var(--on-color); }

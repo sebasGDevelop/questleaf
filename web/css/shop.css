@@ -1,0 +1,57 @@
+/* Shop: reward cards and the history. */
+
+.reward {
+  padding: 8px 10px;
+  margin-bottom: 14px;
+  font-size: 20px;
+  background: var(--lemon);
+  border: 2px solid var(--border);
+  color: var(--ink);
+}
+:root[data-theme="night"] .reward { background: #2a2560; color: var(--ink); }
+.shop-head { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 16px; }
+.shop-head .ico-img { width: 48px; height: 48px; }
+.shop-head b { font-family: var(--pixel); font-size: 34px; color: var(--title); }
+.shop-head span { color: var(--muted); font-size: 19px; }
+.shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; }
+.shop-card {
+  position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 10px;
+  text-align: center; background: var(--card); border: 2px solid var(--frame-dark); border-radius: 9px;
+  box-shadow: 0 3px 0 var(--frame-dark);
+}
+.shop-card.special { background: color-mix(in srgb, var(--sky) 30%, var(--card)); }
+.shop-card b { font-weight: normal; font-size: 20px; line-height: 1.1; }
+.shop-card small { color: var(--muted); font-size: 16px; line-height: 1.1; }
+.sc-ico .ico-img { width: 48px; height: 48px; }
+.sc-tools { position: absolute; top: 4px; right: 4px; display: flex; gap: 2px; opacity: 0; transition: opacity .1s; }
+.shop-card:hover .sc-tools { opacity: 1; }
+.shop-card .btn { margin-top: auto; }
+.shop-card.add {
+  justify-content: center;
+  cursor: pointer;
+  min-height: 150px;
+  box-shadow: none;
+  border: 2px dashed var(--border);
+  background: transparent;
+  font-family: var(--pixel);
+  color: var(--muted);
+  font-size: 42px;
+}
+.shop-card.add:hover { color: var(--title); border-color: var(--title); }
+.shop-history { margin-top: 14px; }
+.shop-history summary { cursor: pointer; color: var(--muted); }
+.shop-history ul { list-style: none; padding: 0; margin: 8px 0 0; }
+.shop-history li { display: flex; justify-content: space-between; padding: 3px 0; border-bottom: 1px dashed var(--line); }
+.shop-history small { color: var(--muted); }
+.sc-ico {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--c, var(--rc, #e9dcc0)) 38%, var(--card));
+  border: 2px solid color-mix(in srgb, var(--c, var(--rc, #b89a74)) 50%, var(--border));
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, .55), inset 0 -3px 0 rgba(0, 0, 0, .08);
+  width: 62px;
+  height: 62px;
+}
+.pet-sc .pet { margin: 0 auto; }

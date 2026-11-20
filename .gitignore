@@ -1,0 +1,23 @@
+# Python environment and build output
+.venv/
+build/
+dist/
+__pycache__/
+*.py[cod]
+*.spec
+*.tmp
+
+# Personal first-run content: a local file, never committed
+web/js/data-notion.js
+
+# Personal music library (only the folder's readme is versioned; a folder named "musica" works too)
+music/*
+!music/README.txt
+musica/
+
+# OS and editor files
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/

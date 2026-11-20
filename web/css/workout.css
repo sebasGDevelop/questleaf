@@ -1,0 +1,76 @@
+/* Workout: day cards, exercise tables and the training plan. */
+
+.workout-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; margin-bottom: 18px; }
+.day-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--card);
+  border: 2px solid var(--frame-dark);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .7), 0 3px 0 var(--frame-dark), 0 5px 0 rgba(91, 67, 50, .14);
+  overflow: hidden;
+  border-radius: 7px;
+}
+.day-card.today { box-shadow: 4px 4px 0 var(--shadow), 0 0 0 3px var(--title); }
+.day-card.ok .dc-head { background-image: repeating-linear-gradient(45deg, transparent 0 8px, rgba(255, 255, 255, .35) 8px 16px); }
+.dc-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+  background: var(--rc);
+  border-bottom: 3px solid var(--border);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, .5);
+  border-bottom-width: 2px;
+}
+.dc-head b { display: block; font-family: var(--pixel); font-size: 15px; font-weight: normal; }
+.dc-head small { font-size: 18px; color: var(--on-color); }
+.ex-table { width: 100%; border-collapse: collapse; font-size: 18px; }
+.ex-table th {
+  font-family: var(--pixel);
+  font-size: 12px;
+  font-weight: normal;
+  color: var(--muted);
+  text-align: left;
+  padding: 8px 8px 4px;
+  white-space: nowrap;
+}
+.ex-table td { padding: 4px 8px; border-bottom: 2px dashed var(--line); }
+.ex-table td:not(:first-child) { text-align: center; width: 1%; padding-left: 6px; padding-right: 6px; white-space: nowrap; }
+.ex-table th:not(:first-child) { text-align: center; width: 1%; padding-left: 6px; padding-right: 6px; }
+.dc-foot { margin-top: auto; padding: 10px; }
+.day-card .empty { padding: 14px 10px; }
+.ex-edit-head {
+  display: grid;
+  grid-template-columns: 1fr 60px 100px 70px 30px;
+  gap: 6px;
+  align-items: center;
+  font-size: 17px;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.ex-row { display: grid; grid-template-columns: 1fr 60px 100px 70px 30px; gap: 6px; align-items: center; margin-bottom: 6px; }
+:root[data-theme="night"] .dc-head,
+:root[data-theme="night"] .dc-head small { color: var(--on-color); }
+
+/* Workout: a big tick, green when done */
+.rdone { font-size: 20px; line-height: 1; opacity: .7; }
+.rdone:hover { opacity: 1; }
+.rdone.on { opacity: 1; background: var(--sage, #a8d8a0); border-color: color-mix(in srgb, var(--sage, #a8d8a0) 50%, var(--border)); color: #2c5940; }
+.rlock { display: block; text-align: center; }
+
+/* Training plan */
+.plan-btn { display: inline-flex; align-items: center; gap: 6px; }
+.plan-btn .ico-img { width: 24px; height: 24px; }
+.plan-btn.btn-primary { font-size: 16px; padding: 8px 14px; }
+.plan-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 12px; }
+.plan-day { padding: 8px 12px 10px; border-radius: 8px; border: 2px solid color-mix(in srgb, var(--rc) 55%, var(--border)); background: color-mix(in srgb, var(--rc) 20%, var(--card)); }
+.plan-day h3 { font: 20px var(--pixel); color: var(--title); margin: 0; }
+.plan-day small { color: var(--muted); font-size: 16px; }
+.plan-day ul { list-style: none; margin: 6px 0 0; padding: 0; font-size: 17px; }
+.plan-day li { display: flex; justify-content: space-between; gap: 10px; padding: 1px 0; }
+.plan-day li b { font-weight: normal; color: var(--muted); white-space: nowrap; }
+.plan-day li i { font-style: normal; color: var(--title); }
+.plan-same { margin: 10px 0 0; font-size: 16px; }
+.plan-tips { margin: 10px 0 0; padding-left: 20px; font-size: 17px; }
+.plan-tips b { font-weight: normal; color: var(--title); }

@@ -1,0 +1,251 @@
+/* The book: ribbons (the menu), the app frame (main.book), the two-page spread and its rings. */
+
+.ribbon:focus-visible { outline: 3px solid var(--title); outline-offset: 2px; }
+.shell {
+  display: grid;
+  grid-template-columns: 178px minmax(0, 1fr);
+  padding: 22px 22px 16px 8px;
+  align-items: start;
+  transition: grid-template-columns .15s;
+}
+.ribbons {
+  position: sticky;
+  top: 104px;
+  display: flex;
+  flex-direction: column;
+  margin-right: -24px;
+  filter: none;
+  z-index: 0;
+  padding-top: 30px;
+  gap: 5px;
+}
+.ribbon {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  color: var(--ink);
+  cursor: pointer;
+  text-align: left;
+  clip-path: none;
+  box-shadow: 3px 3px 0 var(--shadow);
+  transition: transform .15s steps(3);
+  padding: 6px 32px 6px 12px;
+  gap: 10px;
+  border: 3px solid var(--frame-dark);
+  border-right: 0;
+  border-radius: 16px 0 0 16px;
+  background:
+    linear-gradient(90deg, transparent 72%, rgba(40, 26, 16, .3)),
+    linear-gradient(rgba(255, 255, 255, .3) 0 3px, transparent 3px calc(100% - 5px), rgba(40, 26, 16, .22) calc(100% - 5px)),
+    color-mix(in srgb, var(--rc) 68%, #b7a383);
+  transform: translateX(12px);
+  flex: none;
+  min-height: var(--tab-h, 50px);
+}
+.ribbon::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  inset: 4px 0 4px 5px;
+  clip-path: none;
+  filter: none;
+  border: 2px dashed rgba(60, 40, 26, .45);
+  border-right: 0;
+  border-radius: 10px 0 0 10px;
+  pointer-events: none;
+  background: none;
+}
+.ribbon:hover { transform: translateX(5px); }
+.ribbon.active {
+  background:
+    linear-gradient(90deg, transparent 72%, rgba(40, 26, 16, .24)),
+    linear-gradient(rgba(255, 255, 255, .5) 0 3px, transparent 3px calc(100% - 5px), rgba(40, 26, 16, .2) calc(100% - 5px)),
+    var(--rc);
+  transform: translateX(-4px);
+}
+.ribbon.active::before { filter: none; border-color: rgba(255, 250, 235, .85); }
+.ribbon.active .r-label { color: #3f2f25; }
+.r-icon { font-family: var(--emoji); font-size: 17px; flex: none; display: grid; place-items: center; width: 36px; height: 36px; }
+.r-label { font-family: var(--pixel); font-size: 14px; font-weight: 700; color: #5e4a3c; font-synthesis: none; }
+.view > .spread { flex: 1 0 auto; }
+
+/* Two-page spread */
+.spread { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0; }
+.spread > .page { min-width: 0; padding: 0 26px; }
+.spread > .page-left { padding-left: 0; box-shadow: inset -14px 0 14px -14px rgba(91, 67, 50, .3); }
+.spread > .page-right { padding-right: 0; position: relative; border-left: 0; box-shadow: inset 14px 0 14px -14px rgba(91, 67, 50, .35); }
+.corner {
+  position: sticky;
+  top: 0;
+  background: var(--paper2);
+  border-bottom: 3px solid var(--border);
+  left: 0;
+  z-index: 12;
+  display: grid;
+  place-items: center;
+  font-family: var(--emoji);
+  border-right: 3px solid var(--border);
+}
+.spread-books { grid-template-columns: minmax(0, 1.5fr) minmax(300px, 1fr); }
+.r-icon .ico-img { width: 32px; height: 32px; }
+.shell.nav-collapsed { grid-template-columns: 74px minmax(0, 1fr); }
+.shell.nav-collapsed .r-label { display: none; }
+.shell.nav-collapsed .ribbon { padding: 6px 30px 6px 12px; }
+.shell.nav-collapsed .r-icon .ico-img { width: 32px; height: 32px; }
+:root[data-theme="night"] .r-label { color: #3a2f55; }
+
+/* Ribbon icons: a little hop on hover */
+.anim-on .ribbon:hover .ico-img { animation: hop .4s steps(4); }
+.ribbon > * { position: relative; z-index: 1; }
+.ribbon:not(.active) .r-icon .ico-img { filter: saturate(.85); }
+.ribbon:not(.active) .r-label { color: #4d3b2e; }
+:root[data-theme="night"] .ribbon {
+  background:
+    linear-gradient(90deg, transparent 72%, rgba(0, 0, 0, .35)),
+    linear-gradient(rgba(255, 255, 255, .18) 0 3px, transparent 3px calc(100% - 5px), rgba(0, 0, 0, .25) calc(100% - 5px)),
+    color-mix(in srgb, var(--rc) 30%, #262a62);
+  border-color: #c9a24e;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, .35);
+}
+:root[data-theme="night"] .ribbon::before { border-color: rgba(233, 205, 140, .45); }
+:root[data-theme="night"] .ribbon:not(.active) .r-label { color: var(--ink); }
+:root[data-theme="night"] .ribbon.active {
+  background:
+    linear-gradient(90deg, transparent 72%, rgba(0, 0, 0, .25)),
+    linear-gradient(rgba(255, 255, 255, .45) 0 3px, transparent 3px calc(100% - 5px), rgba(0, 0, 0, .2) calc(100% - 5px)),
+    var(--rc);
+}
+:root[data-theme="night"] .ribbon.active::before { border-color: rgba(255, 250, 235, .8); }
+:root[data-theme="night"] .r-icon .ico-img, :root[data-theme="night"] .ribbon:not(.active) .r-icon .ico-img { filter: drop-shadow(0 0 1px rgba(255, 244, 214, .75)); }
+.spread > .page-right::before {
+  content: ''; position: absolute; top: 4px; bottom: 4px; left: -14px; width: 28px; pointer-events: none;
+  background:
+    radial-gradient(circle at 4px 50%, #4a3627 0 3px, transparent 3.5px),
+    radial-gradient(circle at 24px 50%, #4a3627 0 3px, transparent 3.5px),
+    linear-gradient(transparent 0 calc(50% - 3px), #6e5a48 calc(50% - 3px) calc(50% - 1.5px),
+      #efe3c9 calc(50% - 1.5px) calc(50% + .5px), #9d8a72 calc(50% + .5px) calc(50% + 3px), transparent calc(50% + 3px));
+  background-size: 28px 30px; background-repeat: repeat-y;
+}
+:root[data-theme="night"] .spread > .page-right { box-shadow: inset 14px 0 14px -14px rgba(0, 0, 0, .6); }
+:root[data-theme="night"] .spread > .page-left { box-shadow: inset -14px 0 14px -14px rgba(0, 0, 0, .5); }
+:root[data-theme="night"] .spread > .page-right::before {
+  background:
+    radial-gradient(circle at 4px 50%, #05061a 0 3px, transparent 3.5px),
+    radial-gradient(circle at 24px 50%, #05061a 0 3px, transparent 3.5px),
+    linear-gradient(transparent 0 calc(50% - 3px), #7a5c24 calc(50% - 3px) calc(50% - 1.5px),
+      #f0d58a calc(50% - 1.5px) calc(50% + .5px), #a8843c calc(50% + .5px) calc(50% + 3px), transparent calc(50% + 3px));
+  background-size: 28px 30px; background-repeat: repeat-y;
+}
+@media (max-width: 980px) {
+.ribbons { z-index: 5; margin: 0 0 12px; padding: 0; }
+.ribbon {
+      min-height: 0; padding: 6px 12px; border: 3px solid var(--frame-dark); border-bottom: 0;
+      border-radius: 12px 12px 0 0;
+    }
+.ribbon::before { inset: 4px 4px 0 4px; border: 2px dashed rgba(60, 40, 26, .45); border-bottom: 0; border-radius: 8px 8px 0 0; }
+.spread > .page-right::before { display: none; }
+.spread > .page-left, .spread > .page-right { box-shadow: none; }
+}
+
+/* Dot for a pending chronicle on the ribbon */
+.r-dot {
+  position: absolute; z-index: 2; top: 6px; left: 30px; width: 11px; height: 11px; border-radius: 50%;
+  background: #f0b84f; border: 2px solid var(--frame-dark); box-shadow: 0 0 6px rgba(240, 184, 79, .9);
+}
+.spread-lists { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); }
+.spread-notes { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); }
+@media (min-width: 981px) {
+.ribbons {
+      top: calc(var(--hud-h, 96px) + 8px); max-height: calc(100vh - var(--hud-h, 96px) - 62px); /* never past the book */
+      overflow: hidden auto; scrollbar-width: none;
+      margin-left: -6px; padding-left: 6px; padding-bottom: 6px;
+    }
+.ribbons::-webkit-scrollbar { display: none; }
+.ribbons.tight { padding-top: 6px; padding-bottom: 2px; gap: 3px; }
+.ribbons.tight .ribbon { padding-top: 2px; padding-bottom: 2px; }
+.ribbons.tight .r-icon { width: 24px; height: 24px; }
+.ribbons.tight .r-icon .ico-img { width: 24px; height: 24px; }
+.ribbons.tighter .ribbon { padding-top: 0; padding-bottom: 0; }
+.ribbons.tighter .ribbon::before { inset: 2px 0 2px 4px; }
+.ribbons.tighter .r-icon, .ribbons.tighter .r-icon .ico-img { width: 16px; height: 16px; }
+
+/* Last resort (very short window or big zoom): the tabs scroll and the bar says so */
+.ribbons.overflow { scrollbar-width: thin; scrollbar-color: var(--frame-dark) transparent; }
+.ribbons.overflow::-webkit-scrollbar { display: block; width: 6px; }
+.ribbons.overflow::-webkit-scrollbar-thumb { background: var(--frame-dark); border-radius: 3px; }
+}
+@media (max-width: 1250px) {
+.spread, .spread-books { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+
+/* the second page takes the rest */
+.spread > .page { padding: 0; }
+.spread > .page-right { border-left: 0; border-top: 3px dashed var(--line); padding-top: 22px; margin-top: 8px; }
+.spread > .page-right::before { display: none; }
+
+/* one page under the other: no rings */
+.spread > .page-left, .spread > .page-right { box-shadow: none; }
+}
+@media (max-width: 980px) {
+.shell, .shell.nav-collapsed { grid-template-columns: 1fr; padding: 12px; }
+.ribbons {
+      position: static; flex-direction: row; flex-wrap: wrap; margin: 0 0 12px; padding: 0; gap: 6px;
+    }
+.ribbon { transform: none; padding: 8px 12px 8px 20px; }
+.ribbon.active { transform: translateY(-3px); }
+}
+@keyframes pageIn {
+  from { opacity: 0; transform: perspective(1400px) rotateY(-7deg) translateX(-14px); }
+}
+@keyframes hop { 50% { transform: translateY(-4px) rotate(-6deg); } }
+
+/* ---------- The book: the app frame (main.book), wood with gems ---------- */
+.book {
+  position: relative; z-index: 1; min-width: 0;
+  min-height: calc(100vh - var(--hud-h, 96px) - 62px);
+  display: flex; flex-direction: column;
+  padding: 26px 30px 24px;
+  border: 3px solid var(--frame-dark); border-radius: 10px;
+  background:
+    var(--gem) left 10px top 10px / 14px 14px no-repeat,
+    var(--gem) right 10px top 10px / 14px 14px no-repeat,
+    var(--gem) left 10px bottom 10px / 14px 14px no-repeat,
+    var(--gem) right 10px bottom 10px / 14px 14px no-repeat,
+    url('../assets/ui/papel.png'),
+    linear-gradient(#fdf8ee, #f8efdc);
+  box-shadow:
+    inset 0 0 0 3px #fffaf0,
+    inset 0 0 0 5px var(--frame-light),
+    inset 0 0 0 6px rgba(91, 67, 50, .28),
+    0 0 0 4px #c99d6b,
+    0 0 0 6px var(--frame-dark),
+    0 9px 0 6px rgba(91, 67, 50, .18);
+}
+
+/* The open page and its spread fill the whole book: the rings and the pages reach the bottom edge */
+.book > .view:not([hidden]) { flex: 1 0 auto; display: flex; flex-direction: column; }
+@media (max-width: 980px) {
+  .book { padding: 18px 16px; }
+}
+
+/* Short windows (a 1280 × 720 screen): the calendar and the week tables a little more compact */
+@media (max-height: 760px) {
+  /* .book raises the specificity: these rules sit before the components' own */
+  .book .cal-day { min-height: 54px; }
+  .book .mood-btn { height: 44px; }
+  .book .hcheck { width: 32px; height: 32px; }
+  .book .welcome { gap: var(--sp-2); padding-top: 8px; padding-bottom: 8px; }
+  .book .welcome-photo { width: 56px; height: 56px; }
+  .book .shelf { grid-auto-rows: 118px; }
+  .book .spine { height: calc(var(--h, 110px) * .8); }
+}
+:root[data-theme="night"] .book {
+  background:
+    var(--gem) left 10px top 10px / 14px 14px no-repeat,
+    var(--gem) right 10px top 10px / 14px 14px no-repeat,
+    var(--gem) left 10px bottom 10px / 14px 14px no-repeat,
+    var(--gem) right 10px bottom 10px / 14px 14px no-repeat,
+    linear-gradient(#181c48, #131636);
+  box-shadow: inset 0 0 0 3px #232863, inset 0 0 0 5px #3a4190, inset 0 0 0 6px rgba(0, 0, 0, .4),
+    0 0 0 4px var(--leather), 0 0 0 6px #06071a, 0 9px 0 6px rgba(0, 0, 0, .35);
+}

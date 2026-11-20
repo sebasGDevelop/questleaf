@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title data-i18n="float.windowTitle"></title>
+  <!-- A floating window of the desktop app: a note or the metronome, above everything.
+       Its bridge (desktop/main.py, FloatApi) only reaches its own data: get(), put(data), pin(on), fold(on), show_app(), close(). -->
+  <style>
+    @font-face { font-family: 'Aventura'; src: url('fonts/Aventura-Regular.ttf') format('truetype'); size-adjust: 92%; }
+    @font-face { font-family: 'Aventura Px'; src: url('fonts/Aventura-Bold.ttf') format('truetype'); size-adjust: 100%; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; overflow: hidden; }
+    body {
+      --paper: #fff3b0; --ink: #3a2c22; --edge: #5b4332; --soft: rgba(58, 44, 34, .55);
+      display: flex; flex-direction: column; font-family: 'Aventura', monospace; color: var(--ink);
+      background: var(--paper); border: 3px solid var(--edge); border-radius: 12px;
+    }
+    body.metro { --paper: #1c2054; --ink: #f1edff; --edge: #0f1236; --soft: #b9b4e6; background: linear-gradient(#2b2f6b, #1c2054); }
+    /* Title bar: drag it to move the window */
+    .top { display: flex; align-items: center; gap: 4px; height: 36px; padding: 0 6px 0 10px; flex: none; cursor: grab;
+      border-bottom: 2px dashed color-mix(in srgb, var(--edge) 40%, transparent); }
+    .folded .top { border-bottom: 0; }
+    .top b { flex: 1; min-width: 0; font: 15px/1 'Aventura Px', monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .win { width: 26px; height: 24px; padding: 0; border: 0; border-radius: 6px; background: transparent; color: var(--ink);
+      font: 14px/1 'Aventura Px', monospace; cursor: pointer; opacity: .7; }
+    .win:hover { opacity: 1; background: color-mix(in srgb, var(--ink) 12%, transparent); }
+    .win.on { opacity: 1; background: color-mix(in srgb, var(--ink) 18%, transparent); }
+    .win img { width: 16px; height: 16px; image-rendering: pixelated; vertical-align: middle; }
+    .main { flex: 1; min-height: 0; display: flex; flex-direction: column; padding: 8px 10px 10px; gap: 8px; }
+    .folded .main { display: none; }
+    /* Note */
+    textarea { flex: 1; width: 100%; resize: none; border: 0; outline: none; background: transparent; color: var(--ink);
+      font: 18px/1.35 'Aventura', monospace; }
+    textarea::placeholder { color: var(--soft); }
+    .saved { font-size: 13px; color: var(--soft); text-align: right; min-height: 16px; }
+    /* Metronome */
+    .bpm { display: flex; align-items: center; justify-content: center; gap: 10px; }
+    .bpm b { font: 40px/1 'Aventura Px', monospace; color: #ffd36b; min-width: 84px; text-align: center; }
+    .bpm small { color: var(--soft); }
+    .dots { display: flex; justify-content: center; gap: 8px; }
+    .dots i { width: 12px; height: 12px; border-radius: 3px; background: #0f1236; border: 2px solid #3a4190; }
+    .dots i.first { border-color: #ffd36b; }
+    .dots i.on { background: #86c066; }
+    .dots i.first.on { background: #ffd36b; }
+    .row { display: flex; gap: 6px; align-items: center; }
+    button.btn, select {
+      height: 30px; padding: 0 10px; cursor: pointer; font: 15px/1 'Aventura', monospace; color: #f1edff;
+      background: #3a4190; border: 2px solid #0f1236; border-radius: 8px; box-shadow: 0 2px 0 #0f1236;
+    }
+    button.btn:hover { background: #4c56b8; }
+    button.btn:active { transform: translateY(2px); box-shadow: none; }
+    button.go { flex: 1; background: #c98a2c; font-size: 18px; }
+    button.go:hover { background: #ddb03c; }
+    .step { width: 32px; padding: 0; font-size: 18px; }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="top pywebview-drag-region">
+    <b id="title" class="pywebview-drag-region"></b>
+    <button class="win on" id="pin" data-i18n-title="float.unpin" data-i18n-aria-label="float.unpin"><img src="assets/icons/ui-pin.png" alt=""></button>
+    <button class="win" id="fold" data-i18n-title="float.fold" data-i18n-aria-label="float.fold">−</button>
+    <button class="win" id="app" data-i18n-title="float.openApp" data-i18n-aria-label="float.openApp"><img src="assets/icons/ui-float.png" alt=""></button>
+    <button class="win" id="close" data-i18n-title="float.close" data-i18n-aria-label="float.close">✕</button>
+  </div>
+  <!-- Note -->
+  <div class="main" id="note" hidden>
+    <textarea id="body" maxlength="20000" data-i18n-placeholder="float.notePlaceholder"></textarea>
+    <div class="saved" id="saved"></div>
+  </div>
+  <!-- Metronome -->
+  <div class="main" id="metro" hidden>
+    <div class="bpm">
+      <button class="btn step" data-bpm="-5" data-i18n-title="workshop.metronome.slower" data-i18n-aria-label="workshop.metronome.slower">−</button>
+      <b id="bpm">80</b><small>BPM</small>
+      <button class="btn step" data-bpm="5" data-i18n-title="workshop.metronome.faster" data-i18n-aria-label="workshop.metronome.faster">+</button>
+    </div>
+    <div class="dots" id="dots"></div>
+    <div class="row">
+      <select id="beats" data-i18n-aria-label="workshop.metronome.beatsPerBar"><option value="2">2/4</option><option value="3">3/4</option><option value="4">4/4</option><option value="6">6/4</option></select>
+      <button class="btn" id="tap" data-i18n="workshop.metronome.tap" data-i18n-title="workshop.metronome.tapTip"></button>
+      <button class="btn go" id="go" data-i18n-aria-label="workshop.metronome.start">▶</button>
+    </div>
+  </div>
+  <script src="js/i18n/i18n.js"></script>
+  <script src="js/i18n/es.js"></script>
+  <script src="js/i18n/en.js"></script>
+  <script>
+    'use strict';
+    const $ = id => document.getElementById(id);
+    const api = () => window.pywebview && window.pywebview.api;
+    let kind = '', saveTimer = 0, lastBody = null;
+
+    // ----- Window buttons -----
+    $('pin').onclick = async () => {
+      const on = !$('pin').classList.contains('on');
+      if (api()) await api().pin(on);
+      $('pin').classList.toggle('on', on);
+      $('pin').title = t(on ? 'float.unpin' : 'float.pin');
+    };
+    $('fold').onclick = async () => {
+      const on = !document.body.classList.contains('folded');
+      document.body.classList.toggle('folded', on);
+      $('fold').title = t(on ? 'float.unfold' : 'float.fold');
+      if (api()) await api().fold(on);
+    };
+    $('app').onclick = () => api() && api().show_app();
+    $('close').onclick = () => { flushNote(); if (kind === 'metro') stopMetro(); if (api()) api().close(); };
+
+    // ----- Note: saves into the app's note by itself -----
+    function flushNote() {
+      if (kind !== 'note' || lastBody === $('body').value || !api()) return;
+      lastBody = $('body').value;
+      api().put({ body: lastBody });
+      $('saved').textContent = t('float.saved');
+    }
+    $('body').addEventListener('input', e => {
+      // "- " at the start of a line becomes a bullet, as in the app
+      const box = e.target, caret = box.selectionStart, from = box.value.lastIndexOf('\n', caret - 1) + 1;
+      if (e.inputType === 'insertText' && e.data === ' ' && /^\s*[-*] $/.test(box.value.slice(from, caret))) {
+        box.setRangeText('• ', caret - 2, caret, 'end');
+      }
+      $('saved').textContent = '';
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(flushNote, 500);
+    });
+    $('body').addEventListener('keydown', e => {
+      if (e.key !== 'Enter' || e.shiftKey) return;
+      const box = e.target, caret = box.selectionStart, from = box.value.lastIndexOf('\n', caret - 1) + 1;
+      const bullet = (/^(\s*)• /.exec(box.value.slice(from, caret)) || [])[0];
+      if (!bullet) return;
+      e.preventDefault();
+      if (box.value.slice(from, caret).trim() === '•') box.setRangeText('', from, caret, 'end');
+      else box.setRangeText(`\n${bullet}`, caret, caret, 'end');
+      box.dispatchEvent(new InputEvent('input'));
+    });
+    $('body').addEventListener('blur', flushNote);
+
+    // ----- Metronome: this window plays it (a hidden app window could slow its timers down) -----
+    const METRO = { on: false, beat: 0, next: 0, timer: 0, start: 0, taps: [], bpm: 80, beats: 4, volume: 0.7, ctx: null };
+    function drawDots() {
+      $('dots').innerHTML = Array.from({ length: METRO.beats }, (_, i) => `<i data-dot="${i}"${i ? '' : ' class="first"'}></i>`).join('');
+    }
+    function drawMetro() {
+      $('bpm').textContent = METRO.bpm;
+      $('beats').value = String(METRO.beats);
+      $('go').textContent = METRO.on ? '■' : '▶';
+      $('go').setAttribute('aria-label', t(METRO.on ? 'workshop.metronome.stop' : 'workshop.metronome.start'));
+    }
+    function click(time, accent) {
+      const ctx = METRO.ctx, osc = ctx.createOscillator(), gain = ctx.createGain();
+      osc.type = 'square'; osc.frequency.value = accent ? 1320 : 880;
+      gain.gain.setValueAtTime(0.0001, time);
+      gain.gain.exponentialRampToValueAtTime(METRO.volume * (accent ? 0.35 : 0.22), time + 0.002);
+      gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.05);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(time); osc.stop(time + 0.06);
+    }
+    function schedule() {
+      const ctx = METRO.ctx;
+      while (METRO.next < ctx.currentTime + 0.12) {
+        const beat = METRO.beat, at = METRO.next;
+        click(at, beat === 0);
+        setTimeout(() => document.querySelectorAll('[data-dot]').forEach(d => d.classList.toggle('on', +d.dataset.dot === beat)), Math.max(0, (at - ctx.currentTime) * 1000));
+        METRO.beat = (beat + 1) % METRO.beats;
+        METRO.next += 60 / METRO.bpm;
+      }
+    }
+    function startMetro() {
+      METRO.ctx = METRO.ctx || new AudioContext();
+      if (METRO.ctx.state === 'suspended') METRO.ctx.resume();
+      Object.assign(METRO, { on: true, beat: 0, next: METRO.ctx.currentTime + 0.08, start: Date.now() });
+      METRO.timer = setInterval(schedule, 25);
+      schedule();
+      drawMetro();
+    }
+    function stopMetro() {
+      if (!METRO.on) return;
+      METRO.on = false;
+      clearInterval(METRO.timer);
+      document.querySelectorAll('[data-dot]').forEach(d => d.classList.remove('on'));
+      const practiced = Math.round((Date.now() - METRO.start) / 60000);
+      if (api()) api().put({ bpm: METRO.bpm, beats: METRO.beats, practiced }); // minutes go to the habit chosen in the app
+      drawMetro();
+    }
+    const sendTempo = () => api() && api().put({ bpm: METRO.bpm, beats: METRO.beats });
+    document.querySelectorAll('[data-bpm]').forEach(b => { b.onclick = () => { METRO.bpm = Math.max(40, Math.min(208, METRO.bpm + +b.dataset.bpm)); drawMetro(); sendTempo(); }; });
+    $('beats').onchange = () => { METRO.beats = +$('beats').value; METRO.beat = 0; drawDots(); sendTempo(); };
+    $('tap').onclick = () => {
+      const now = performance.now(), taps = METRO.taps.filter(x => now - x < 2500);
+      taps.push(now); METRO.taps = taps;
+      if (taps.length >= 3) {
+        const gaps = taps.slice(1).map((x, i) => x - taps[i]);
+        METRO.bpm = Math.max(40, Math.min(208, Math.round(60000 / (gaps.reduce((a, b) => a + b, 0) / gaps.length))));
+        drawMetro(); sendTempo();
+      }
+    };
+    $('go').onclick = () => (METRO.on ? stopMetro() : startMetro());
+    addEventListener('beforeunload', () => { flushNote(); stopMetro(); });
+
+    // ----- Start: ask the app for this window's data -----
+    async function load(first) {
+      let data = null;
+      try { data = api() ? await api().get() : null; } catch (e) { data = null; }
+      if (!data) return;
+      if (data.lang && data.lang !== currentLanguage()) { setLanguage(data.lang); translateStatic(); }
+      kind = data.kind;
+      document.body.classList.toggle('metro', kind === 'metro');
+      $('note').hidden = kind !== 'note';
+      $('metro').hidden = kind !== 'metro';
+      if (kind === 'note') {
+        if (data.color) document.body.style.setProperty('--paper', data.color);
+        $('title').textContent = data.missing ? t('float.noteMissing') : data.title;
+        $('body').disabled = !!data.missing;
+        const typing = document.activeElement === $('body') || $('body').value !== (lastBody ?? $('body').value);
+        if (!typing && data.body !== $('body').value) { $('body').value = data.body; lastBody = data.body; }
+        if (first) lastBody = data.body;
+      } else if (first) {
+        $('title').textContent = t('workshop.metronome.title');
+        Object.assign(METRO, { bpm: data.bpm, beats: data.beats, volume: data.volume });
+        drawDots(); drawMetro();
+      }
+    }
+    async function boot() {
+      translateStatic();
+      await load(true);
+      setInterval(() => kind === 'note' && load(false), 2500); // changes made in the app show up here
+    }
+    window.addEventListener('pywebviewready', boot, { once: true });
+    if (api()) boot();
+  </script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+/* Home: greeting, cultivation path, now / next, today cards, goals and milestones. */
+
+.motto { margin: 8px 0; font-size: 22px; font-style: italic; color: var(--muted); }
+.today-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 6px; }
+.mini-ico { font-family: var(--emoji); font-size: 20px; box-shadow: inset 0 2px 0 rgba(255, 255, 255, .55), inset 0 -3px 0 rgba(0, 0, 0, .08); }
+.mini-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+
+/* Now / next (Home, zone 2) */
+.now-next { display: flex; flex-direction: column; gap: 6px; margin-bottom: var(--sp-3); }
+.nn-row { display: flex; align-items: center; gap: var(--sp-2); padding: 6px 10px; border-radius: 8px;
+  background: color-mix(in srgb, var(--c) 22%, var(--card)); border: 2px solid color-mix(in srgb, var(--c) 55%, var(--border)); }
+.nn-row b { flex: 1; min-width: 0; font-weight: normal; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.nn-row.done b { text-decoration: line-through; color: var(--muted); }
+.nn-label { width: 64px; flex: none; font-family: var(--pixel); font-size: 12px; letter-spacing: 1px; color: var(--muted); }
+.nn-time { flex: none; font-size: var(--fs-label); color: var(--muted); }
+:root[data-theme="night"] .nn-row { background: color-mix(in srgb, var(--c) 14%, var(--card)); }
+.now-line {
+  position: relative; z-index: 6; pointer-events: none; align-self: start;
+  height: 3px; background: #e0796f; box-shadow: 0 0 0 1px var(--border);
+}
+.now-line::before {
+  content: ''; position: absolute; left: -2px; top: -5px;
+  width: 10px; height: 10px; background: #e0796f; border: 2px solid var(--border);
+}
+.mini-ico .ico-img { image-rendering: pixelated; width: 32px; height: 32px; }
+.welcome {
+  display: flex; flex-direction: column; align-items: stretch; gap: var(--sp-3); width: 100%; margin-bottom: 18px;
+  padding: 12px 14px; text-align: left; cursor: pointer;
+  background: linear-gradient(#fffcf5, #fbf1dd);
+  border: 2px solid var(--frame-dark); border-radius: 8px;
+  box-shadow: inset 0 0 0 2px #fffaf0, inset 0 0 0 4px var(--frame-light), 0 3px 0 var(--frame-dark);
+}
+.welcome:hover { filter: brightness(1.03); }
+.welcome-photo {
+  width: 68px; height: 68px; flex: none; overflow: hidden; display: grid; place-items: center;
+  background: var(--sky); border: 2px solid var(--frame-dark); border-radius: 10px;
+  box-shadow: 0 3px 0 var(--frame-dark);
+}
+.welcome-photo svg { width: 80%; height: 80%; }
+.welcome-row { display: flex; align-items: center; gap: var(--sp-4); min-width: 0; }
+.welcome-text { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.welcome-hi { font-family: var(--pixel); font-size: 30px; font-weight: 700; color: var(--title); line-height: 1.05; }
+.welcome-text .motto { margin: 0; font-size: 22px; }
+.welcome-text small { color: var(--muted); font-size: 18px; }
+
+/* Compact cultivation path (Home, zone 1): one gem per realm, the bar fills towards the next one */
+.home-path { display: flex; flex-direction: column; gap: 6px; padding-top: 10px; border-top: 2px dashed var(--line); }
+.hp-head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--sp-2); }
+.hp-head b { font-family: var(--pixel); font-size: var(--fs-label); color: var(--title); letter-spacing: .5px; }
+.hp-head span { font-size: var(--fs-sm); text-align: right; }
+.hp-track { display: flex; align-items: center; height: 24px; padding: 0 4px; }
+.hp-node { flex: none; display: block; width: 12px; height: 12px; transform: rotate(45deg); background: var(--card); border: 2px solid var(--frame-dark); }
+.hp-node.past { background: var(--rc); }
+.hp-node.here { width: 18px; height: 18px; background: var(--rc); box-shadow: 0 0 0 3px color-mix(in srgb, var(--rc) 45%, transparent), 0 0 8px var(--rc); }
+.hp-seg { flex: 1; display: block; height: 8px; margin: 0 4px; overflow: hidden; background: var(--paper2); border: 2px solid var(--frame-dark); border-radius: 3px; }
+.hp-seg > i { display: block; height: 100%; background: var(--sage); }
+.hp-next { color: var(--muted); font-size: var(--fs-sm); }
+:root[data-theme="night"] .welcome {
+  background: linear-gradient(#20255c, #181c48);
+  box-shadow: inset 0 0 0 2px #262c66, inset 0 0 0 3px var(--frame-light), 0 3px 0 var(--frame-dark);
+}
+.welcome-photo .initial-avatar { font-size: 56px; }
+.goal { flex-direction: column; align-items: stretch; }
+.goal-head { display: flex; align-items: center; gap: 9px; }
+.goal .pbar { height: 18px; margin: 8px 0 0 35px; }
+.milestones { list-style: none; margin: 8px 0 0 35px; padding: 0; display: flex; flex-direction: column; gap: 5px; }
+.milestones li { display: flex; align-items: center; gap: 8px; font-size: 19px; }
+.milestones li.done span { text-decoration: line-through; color: var(--muted); }
+.ms-check {
+  flex: none; width: 20px; height: 20px; padding: 0; cursor: pointer;
+  background: #fffdf7; border: 2px solid var(--border); color: #3f7a37; font-family: var(--pixel); font-size: 13px; line-height: 1;
+}
+.ms-check:hover { background: var(--lemon); }
+.ms-edit { display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; }
+.ms-row { display: flex; gap: 6px; align-items: center; }
+.ms-row input { flex: 1; }
+.welcome-hi { font-synthesis: none; }
+.mini-ico {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--c, var(--rc, #e9dcc0)) 38%, var(--card));
+  border: 2px solid color-mix(in srgb, var(--c, var(--rc, #b89a74)) 50%, var(--border));
+}
+.mini-ico { width: 40px; height: 40px; }
+.ms-pin { opacity: .35; }
+.ms-pin.on { opacity: 1; }
+.milestones li:hover .ms-pin { opacity: 1; }
+.goal.done { border-color: #e0b23a; box-shadow: 0 0 0 2px rgba(224, 178, 58, .5), 0 0 12px rgba(255, 205, 80, .55); }
+
+/* Goal sizes */
+.goal-size { flex: none; padding: 1px 8px; border-radius: 10px; font-size: 14px; white-space: nowrap;
+  background: color-mix(in srgb, var(--gs, #cfe3a0) 45%, var(--card)); border: 2px solid color-mix(in srgb, var(--gs, #cfe3a0) 60%, var(--border)); }
+.goal-size.s-short { --gs: #cfe3a0; }
+.goal-size.s-medium { --gs: #a9cbe8; }
+.goal-size.s-long { --gs: #d9b3e6; }
+.goal-size.s-epic { --gs: #f6d38a; }
+.welcome-wrap { position: relative; }
+.welcome-wrap .welcome-row { padding-right: 100px; }
+.welcome-pet { position: absolute; right: 14px; top: 10px; z-index: 2; padding: 0; cursor: pointer; background: none; border: 0; }

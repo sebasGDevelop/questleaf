@@ -1,0 +1,55 @@
+/* Memories: capsules, the memory jar, gratitude and the weekly wrap. */
+
+.grat-form { display: flex; align-items: center; gap: 8px; margin: 10px 0 6px; }
+.grat-form input { flex: 1; min-width: 0; }
+.jar-mini { display: flex; flex-wrap: wrap; align-content: flex-end; gap: 2px; width: 34px; min-height: 30px; padding: 3px; border: 2px solid var(--border); border-top-width: 4px; border-radius: 4px 4px 8px 8px; background: color-mix(in srgb, #cde0fa 25%, var(--card)); }
+.jar-mini i, .mem-g i { display: inline-block; width: 6px; height: 6px; border-radius: 2px; background: var(--c); }
+.jar-mini i.empty { opacity: 0; }
+.grat-list { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.grat-list .chip { background: color-mix(in srgb, var(--c) 75%, #fff); } /* the jar's marbles, softened under dark text */
+.memories { display: flex; flex-direction: column; gap: 6px; margin: 8px 0 12px; }
+.memory { text-align: left; cursor: pointer; padding: 6px 10px; color: var(--ink); background: color-mix(in srgb, #d9b3e6 14%, var(--card)); border: 2px dashed color-mix(in srgb, #b29ae2 55%, var(--border)); border-radius: 8px; }
+.memory small { color: var(--title); font-family: var(--pixel); font-size: 13px; letter-spacing: 1px; }
+.memory small .ico-img { width: 16px; height: 16px; vertical-align: -3px; }
+.memory p { margin: 2px 0 0; font-size: 17px; }
+.jar-row { display: flex; align-items: center; gap: 16px; }
+.jar { width: 180px; height: 216px; flex: none; image-rendering: pixelated; }
+.anim-on .jar.shake { animation: jar-shake .6s steps(6); }
+.jar-side { flex: 1; display: flex; flex-direction: column; gap: 12px; }
+.jar-memory { min-height: 90px; padding: 10px 12px; background: var(--card); border: 2px solid var(--border); border-radius: 8px; }
+.jar-memory p { margin: 0 0 4px; font-size: 20px; }
+.jar-memory small { color: var(--muted); }
+.capsules { display: flex; flex-direction: column; gap: 8px; }
+.capsule { display: flex; align-items: center; gap: 10px; padding: 6px 10px; background: var(--card); border: 2px solid var(--border); border-radius: 8px; }
+.capsule > div { flex: 1; display: flex; flex-direction: column; }
+.capsule b { font-weight: normal; }
+.capsule small { color: var(--muted); font-size: 14px; }
+.cap-ico .ico-img { width: 32px; height: 32px; }
+.capsule.ready { border-color: #e0b23a; box-shadow: 0 0 0 2px rgba(224, 178, 58, .4), 0 0 12px rgba(255, 205, 80, .45); }
+.capsule.opened { opacity: .75; }
+.cap-when { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.capsule-letter p { white-space: pre-wrap; font-size: 21px; line-height: 1.45; background: repeating-linear-gradient(transparent 0 30px, rgba(122, 92, 69, .16) 30px 31px); }
+.capsule-letter small { color: var(--muted); }
+.wrap-box { display: flex; flex-direction: column; align-items: center; gap: 14px; height: 100%; justify-content: center; }
+.wrap-head { display: flex; align-items: center; gap: 12px; }
+.wrap-card {
+  width: min(360px, 100%); min-height: 330px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 22px 18px; cursor: pointer; text-align: center;
+  background: linear-gradient(color-mix(in srgb, var(--c) 55%, var(--card)), color-mix(in srgb, var(--c) 25%, var(--card)));
+  border: 4px solid var(--frame-dark); border-radius: 14px; box-shadow: inset 0 0 0 3px rgba(255, 255, 255, .45), 0 6px 0 var(--frame-dark);
+}
+.anim-on .wrap-card { animation: wrap-in .35s steps(5); }
+.wr-ico .ico-img { width: 64px; height: 64px; }
+.wrap-card .wr-sub { color: var(--ink); } /* the muted grey is too faint on the coloured card; the size keeps it second */
+.wr-big { font: 64px/1 var(--pixel); color: var(--title); }
+.wr-label { font: 22px var(--pixel); color: var(--ink); }
+.wr-sub { color: var(--muted); font-size: 16px; max-width: 280px; }
+.wr-moods { display: flex; align-items: flex-end; gap: 6px; height: 44px; margin-top: 6px; justify-content: center; }
+.wr-moods i { width: 18px; height: var(--h); background: var(--c); border: 2px solid var(--frame-dark); border-radius: 3px 3px 0 0; }
+.wr-jar { width: 90px; height: 108px; image-rendering: pixelated; }
+.wrap-dots { display: flex; gap: 6px; }
+.wrap-dots button { width: 14px; height: 14px; padding: 0; cursor: pointer; border-radius: 3px; background: color-mix(in srgb, var(--c) 40%, var(--card)); border: 2px solid var(--border); }
+.wrap-dots button.on { background: var(--c); border-color: var(--frame-dark); transform: scale(1.2); }
+@keyframes jar-shake { 20% { transform: rotate(-8deg); } 40% { transform: rotate(7deg); } 60% { transform: rotate(-5deg); } 80% { transform: rotate(3deg); } }
+@keyframes wrap-in { from { transform: translateY(10px) scale(.97); opacity: 0; } }
+/* Night: the card is a dark tint of its colour (a mid tone would leave light text unreadable) */
+:root[data-theme="night"] .wrap-card { background: linear-gradient(color-mix(in srgb, var(--c) 22%, var(--card)), color-mix(in srgb, var(--c) 10%, var(--card))); }

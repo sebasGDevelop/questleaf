@@ -1,0 +1,72 @@
+/* Quotes: reflections and vehemence, with their tabs. */
+
+.q-actions { display: flex; gap: 4px; opacity: 0; transition: opacity .1s; }
+.quote:hover .q-actions,
+.veh-card:hover .q-actions,
+.quote:focus-within .q-actions,
+.veh-card:focus-within .q-actions { opacity: 1; }
+.quotes { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 0 16px; align-items: start; }
+
+/* row by row, so the pages cut cleanly */
+.quote {
+  position: relative; display: flex; gap: 10px; align-items: flex-start;
+  break-inside: avoid; margin-bottom: 12px; padding: 10px 10px 10px 8px;
+  background: var(--card); border: 2px solid var(--border); box-shadow: 3px 3px 0 var(--shadow);
+}
+.quote.fav { background: #fff6d6; }
+.q-num {
+  flex: none; min-width: 34px; padding: 3px 4px; text-align: center;
+  font-family: var(--pixel); font-size: 14px; background: var(--lilac); border: 2px solid var(--border);
+}
+.quote p { margin: 0; flex: 1; font-size: 21px; line-height: 1.2; }
+.quote .q-actions {
+  position: absolute; right: 6px; top: -14px;
+  padding: 3px; background: var(--card); border: 2px solid var(--border);
+}
+.quote .q-actions .icon-mini { width: 24px; height: 24px; font-size: 12px; }
+.quote.fav::after {   /* a fixed little star on favourites, drawn by the pixel font (never a colour emoji) */
+  content: '★'; position: absolute; right: 6px; bottom: 4px; font-family: var(--pixel); font-size: var(--fs-label); color: var(--title);
+}
+
+/* Quotes: REFLECTIONS | VEHEMENCE tabs, each with its color; the kind selector of the window too */
+.quote-tabs { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.quote-tabs .tab { flex: 0 1 auto; display: flex; align-items: center; gap: var(--sp-2); padding: var(--sp-2) var(--sp-4); font-size: var(--fs-btn); }
+.quote-tabs .tab .ico-img { width: 24px; height: 24px; }
+.quote-tabs .tab small { font-family: var(--body); font-size: var(--fs-label); opacity: .8; }
+.quote-tabs .tab.active, :root[data-theme="night"] .quote-tabs .tab.active { background: var(--rc); color: var(--on-color, var(--ink)); }
+.quote-tab-hint { margin: var(--sp-2) 0 var(--sp-4); color: var(--muted); font-size: var(--fs-sm); }
+.veh-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.veh-title { font-family: var(--pixel); font-size: 17px; font-weight: normal; color: var(--title); margin: 0 0 14px; }
+.veh-card {
+  position: relative; margin: 0 0 18px; padding: 20px 22px;
+  background: #fbf0dc; border: 3px solid var(--border);
+  box-shadow: 4px 4px 0 var(--shadow), inset 0 0 0 4px #f3e1bd;
+}
+.veh-card::before {
+  content: '“'; position: absolute; left: 10px; top: -14px; font-family: var(--pixel);
+  font-size: 34px; color: #e0796f; background: var(--paper); padding: 0 4px; line-height: 1;
+}
+.veh-card p { margin: 0; font-size: 22px; line-height: 1.3; }
+.veh-card .q-actions { position: absolute; right: 8px; top: 8px; }
+.quote {
+  border-width: 2px;
+}
+.q-num {
+  border-width: 2px;
+}
+.veh-card {
+  border-color: var(--frame-dark); border-radius: 7px;
+}
+.quote {
+  border-color: var(--frame-dark);
+}
+.quote {
+  border-radius: 6px;
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, .6), 0 2px 0 var(--frame-dark), 0 4px 0 rgba(91, 67, 50, .12);
+}
+:root[data-theme="night"] .veh-card { background: #1d2150; box-shadow: 4px 4px 0 var(--shadow), inset 0 0 0 4px #262c66; }
+:root[data-theme="night"] .quote.fav { background: #2b2858; }
+:root[data-theme="night"] .q-num { color: var(--on-color); }
+@media (max-width: 980px) {
+  .veh-cols { grid-template-columns: 1fr; }
+}

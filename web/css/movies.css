@@ -1,0 +1,44 @@
+/* Movies: the tickets. */
+
+.tickets { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+.ticket {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px 10px 14px;
+  min-height: 58px;
+  background: color-mix(in srgb, var(--c) 40%, var(--card));
+  border: 3px solid var(--border);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, .6), 0 2px 0 var(--frame-dark), 0 4px 0 rgba(91, 67, 50, .12);
+}
+:root[data-theme="night"] .ticket { background: color-mix(in srgb, var(--c) 22%, var(--card));
+}
+.ticket::before {   /* ticket notch */
+  content: ''; position: absolute; left: -9px; top: 50%; width: 14px; height: 14px; transform: translateY(-50%);
+  background: var(--paper); border: 3px solid var(--border); border-radius: 50%;
+}
+.ticket.done { background: color-mix(in srgb, var(--c) 18%, var(--paper)); }
+.t-title { flex: 1; font-size: 20px; line-height: 1.1; min-width: 0; }
+.t-stamp {
+  font-family: var(--pixel); font-size: 12px; padding: 3px 5px;
+  background: var(--sage); border: 2px solid var(--border); transform: rotate(-6deg);
+}
+.t-actions { display: flex; gap: 4px; opacity: 0; transition: opacity .1s; }
+.ticket:hover .t-actions,
+.ticket:focus-within .t-actions { opacity: 1; }
+.ticket {
+  border-width: 2px;
+}
+.t-stamp {
+  border-width: 2px;
+}
+.ticket {
+  border-color: var(--frame-dark);
+}
+.ticket { border-radius: 6px; }
+:root[data-theme="night"] .t-stamp { color: var(--on-color); }
+.t-poster { width: 30px; height: 44px; object-fit: cover; border-radius: 3px; border: 2px solid var(--frame-dark); flex: none; }
+button.t-title { background: none; border: 0; padding: 0; cursor: pointer; text-align: left; color: inherit; font: inherit; }
+button.t-title:hover { color: var(--title); }
+.t-stars { color: #ddb03c; font-size: 13px; }
