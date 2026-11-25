@@ -1,9 +1,8 @@
 # Questleaf
+![Questleaf, Banner](screenshots/Questleaf_Launch_Banner.png)
 
 A pixel-art adventure book for planning your days. Your schedule, habits, studies, reading and the apps you work
 with live on its pages, and everything you finish turns into XP, levels and a small spirit beast that grows with you.
-
-![Questleaf, the home page](screenshots/home.png)
 
 Windows 10 or 11, in English and Spanish. No account and no server: your save stays on your computer.
 
@@ -89,6 +88,8 @@ write to **sebasgdesign@gmail.com**.
 Because it does not allow commercial use, this is not an open source license in the OSI sense. The third-party parts
 listed below keep their own licenses.
 
+ ![Questleaf, Banner2](screenshots/Questleaf_Launch_Banner_2.png)
+ 
 ## Credits
 
 - [DotGothic16](https://github.com/fontworks-fonts/DotGothic16) by Fontworks, under the SIL Open Font License 1.1
